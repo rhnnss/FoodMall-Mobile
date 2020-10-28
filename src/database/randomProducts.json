@@ -1,0 +1,37 @@
+[
+    {
+        "image": "/img/Tripple Burger With Cheese.png",
+        "name": "Triple Burger with Cheese",
+        "price": 55500
+    },
+    {
+        "image": "/img/Beef Burger Duluxe.png",
+        "name": "Beef Burger Deluxe",
+        "price": 150000
+    },
+    {
+        "image": "/img/Egg-and-Cheese-Muffin.png",
+        "name": "Egg and Cheese Muffin",
+        "price": 56000
+    },
+    {
+        "image": "/img/Sausage-McMuffin-with-Egg.png",
+        "name": "Sausage McMuffin with Egg",
+        "price": 26000
+    },
+    {
+        "image": "/img/Hotcakes-3-pcs.png",
+        "name": "Hotcakes 3 pcs",
+        "price": 35800
+    },
+    {
+        "image": "/img/Hashbrown.png",
+        "name": "Hashbrown",
+        "price": 39999
+    },
+    {
+        "image": "/img/Nasi-Uduk-McD-Ayam-Suwir.png",
+        "name": "Nasi Uduk McD Ayam Suwir",
+        "price": 25000
+    }
+]
