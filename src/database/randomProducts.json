@@ -1,6 +1,6 @@
 [
     {
-        "image": "/img/Tripple Burger With Cheese.png",
+        "image": "require('../../assets/images/Avatar.png')",
         "name": "Triple Burger with Cheese",
         "price": 55500
     },

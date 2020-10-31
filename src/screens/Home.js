@@ -7,11 +7,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Search, Category, RandomProduct, SortModal} from '../components';
+import {Search, Category, SortModal, RandomProducts} from '../components';
 import {images, FONTS, SIZES, COLORS} from '../constants';
 import {ArrowDown} from '../constants/icons';
 import LinearGradient from 'react-native-linear-gradient';
-import TestApi from '../components/TestApi';
+import Products from '../components/Products';
 
 const Home = () => {
   let popupRef = React.createRef();
@@ -85,24 +85,8 @@ const Home = () => {
         </View>
 
         <View style={styles.RandomProduct}>
-          <TestApi />
-          {/* <RandomProduct
-            title="Egg and Cheese Muffin"
-            price="35.200"
-            star="3"
-          /> */}
-          {/* <RandomProduct title="Chicken Muffin" price="35.200" star="3" />
-          <RandomProduct title="Sausage Cheese" price="35.200" star="5" />
-          <RandomProduct title="Big Mac" price="35.200" star="5" />
-          <RandomProduct title="Egg Mucfin" price="35.200" star="2" />
-          <RandomProduct title="Sausage Wrap" price="35.200" star="3" />
-          <RandomProduct title="Nasi Uduk" price="35.200" star="0" />
-          <RandomProduct title="Nasi Kuning" price="35.200" star="1" /> */}
+          <Products />
         </View>
-
-        {/* <View>
-          <TestApi />
-        </View> */}
 
         <SortModal
           ref={(target) => (popupRef = target)}

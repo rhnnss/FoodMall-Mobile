@@ -5,107 +5,33 @@ import {
   View,
   FlatList,
   TouchableHighlight,
-  Image,
   ScrollView,
+  Image,
+  ActivityIndicator,
 } from 'react-native';
 import {COLORS, FONTS, images, SIZES} from '../../constants';
 import {StarActive, StarNonActive} from '../../constants/icons';
 
-export default class TestApi extends Component {
+export default class Products extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: true,
       dataSource: [],
     };
   }
 
   componentDidMount() {
-    fetch('http://192.168.100.12:4070/randomProducts')
+    fetch('http://192.168.100.12:4090/newProducts')
       .then((response) => response.json())
       .then((responseJson) => {
+        console.log(responseJson);
         this.setState({
+          isLoading: false,
           dataSource: responseJson,
         });
       });
   }
-
-  renderItem = ({item}) => {
-    const Star = () => {
-      if (item.star === '5')
-        return (
-          <View style={styles.rating}>
-            <StarActive />
-            <StarActive />
-            <StarActive />
-            <StarActive />
-            <StarActive />
-          </View>
-        );
-      if (item.star === '4')
-        return (
-          <View style={styles.rating}>
-            <StarActive />
-            <StarActive />
-            <StarActive />
-            <StarActive />
-            <StarNonActive />
-          </View>
-        );
-      if (item.star === '3')
-        return (
-          <View style={styles.rating}>
-            <StarActive />
-            <StarActive />
-            <StarActive />
-            <StarNonActive />
-            <StarNonActive />
-          </View>
-        );
-      if (item.star === '2')
-        return (
-          <View style={styles.rating}>
-            <StarActive />
-            <StarActive />
-            <StarNonActive />
-            <StarNonActive />
-            <StarNonActive />
-          </View>
-        );
-      if (item.star === '1')
-        return (
-          <View style={styles.rating}>
-            <StarActive />
-            <StarNonActive />
-            <StarNonActive />
-            <StarNonActive />
-            <StarNonActive />
-          </View>
-        );
-      if (item.star === '0')
-        return (
-          <View style={styles.rating}>
-            <Text>Maaf Belum di Nilai!</Text>
-          </View>
-        );
-    };
-
-    return (
-      <TouchableHighlight style={styles.card}>
-        <>
-          <View style={styles.head}>
-            <Image source={images.Burger} />
-            <View style={styles.detail}>
-              <Text style={styles.labelTitle}>{item.name}</Text>
-              <Text style={styles.valuePrice}>Rp.{item.price}</Text>
-            </View>
-          </View>
-          <View style={styles.footer}>
-            <Star />
-          </View>
-        </>
-      </TouchableHighlight>
-    );
-  };
 
   render() {
     let modul = this.state.dataSource.map((value) => {
@@ -167,13 +93,20 @@ export default class TestApi extends Component {
             </View>
           );
       };
+
+      console.log(value.icon);
+
       return (
-        <TouchableHighlight style={styles.container}>
+        <TouchableHighlight style={styles.container} key={value.id}>
           <View style={styles.button}>
-            <Image source={images.Burger} />
             <View style={styles.info}>
-              <Text style={styles.labelTitle}>{value.name}</Text>
-              <Text style={styles.valuePrice}>Rp.{value.price}</Text>
+              <Text style={styles.labelTitle}>{value.nama}</Text>
+              <Text style={styles.valuePrice}>Rp.{value.harga}</Text>
+              <Image
+                style={styles.Icon}
+                source={require(value.icon)}
+                resizeMode="contain"
+              />
             </View>
             <Star />
           </View>
@@ -181,29 +114,30 @@ export default class TestApi extends Component {
       );
     });
 
-    return (
-      <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          justifyContent: 'space-between',
-          marginTop: -20,
-        }}>
-        {/* <FlatList
-          style={styles.container}
-          numColumns={2}
-          data={this.state.dataSource}
-          renderItem={this.renderItem}
-          keyExtractor={(item, index) => index.toString()}
-        /> */}
+    let {isLoading} = this.state;
 
-        {modul}
-      </View>
-    );
+    if (isLoading) {
+      <View>
+        <ActivityIndicator size="large" animating />
+      </View>;
+    } else {
+      return <View style={styles.page}>{modul}</View>;
+    }
   }
 }
 
 const styles = StyleSheet.create({
+  Icon: {
+    width: 60,
+    height: 60,
+    borderRadius: 100,
+  },
+  page: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginTop: -20,
+  },
   container: {
     flexDirection: 'column',
   },

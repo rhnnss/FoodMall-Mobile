@@ -1,7 +1,7 @@
 import BottomTabNavigator from './Navigator/BottomTabNavigator';
 import Search from './Search';
 import Category from './Category';
-import RandomProduct from './RandomProduct';
+import RandomProducts from './RandomProducts';
 import SortModal from './SortModal';
 
-export {BottomTabNavigator, Search, Category, RandomProduct, SortModal};
+export {BottomTabNavigator, Search, Category, RandomProducts, SortModal};
