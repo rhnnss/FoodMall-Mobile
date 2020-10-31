@@ -12,6 +12,7 @@ import {images, FONTS, SIZES, COLORS} from '../constants';
 import {ArrowDown} from '../constants/icons';
 import LinearGradient from 'react-native-linear-gradient';
 import Products from '../components/Products';
+import TestApi from '../components/TestApi';
 
 const Home = () => {
   let popupRef = React.createRef();

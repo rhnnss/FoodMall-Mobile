@@ -94,19 +94,29 @@ export default class Products extends Component {
           );
       };
 
-      console.log(value.icon);
+      const convertToRupiah = (angka) => {
+        var rupiah = '';
+        var angkarev = angka.toString().split('').reverse().join('');
+        for (var i = 0; i < angkarev.length; i++)
+          if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
+        return (
+          'Rp. ' +
+          rupiah
+            .split('', rupiah.length - 1)
+            .reverse()
+            .join('')
+        );
+      };
 
       return (
         <TouchableHighlight style={styles.container} key={value.id}>
           <View style={styles.button}>
+            <Image source={{uri: value.icon}} style={styles.product} />
             <View style={styles.info}>
               <Text style={styles.labelTitle}>{value.nama}</Text>
-              <Text style={styles.valuePrice}>Rp.{value.harga}</Text>
-              <Image
-                style={styles.Icon}
-                source={require(value.icon)}
-                resizeMode="contain"
-              />
+              <Text style={styles.valuePrice}>
+                {convertToRupiah(value.harga)}
+              </Text>
             </View>
             <Star />
           </View>
@@ -117,9 +127,11 @@ export default class Products extends Component {
     let {isLoading} = this.state;
 
     if (isLoading) {
-      <View>
-        <ActivityIndicator size="large" animating />
-      </View>;
+      return (
+        <View>
+          <ActivityIndicator size="large" animating />
+        </View>
+      );
     } else {
       return <View style={styles.page}>{modul}</View>;
     }
@@ -177,5 +189,9 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     fontSize: SIZES.h1,
     marginTop: 7,
+  },
+  product: {
+    width: 98.17,
+    height: 98.17,
   },
 });
