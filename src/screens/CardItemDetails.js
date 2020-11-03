@@ -132,7 +132,7 @@ const CardItemDetails = ({route, navigation, type}) => {
         <Text style={styles.value}>{description}</Text>
 
         <View style={styles.footer}>
-          <DetailCountButton type="Large" />
+          {/* <DetailCountButton type="Large" /> */}
 
           <AddToCart title={title} image={image} />
         </View>

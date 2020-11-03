@@ -24,7 +24,7 @@ const DetailCountButton = ({type}) => {
       <TouchableOpacity style={styles.minus} onPress={() => minusHandle()}>
         <Minus />
       </TouchableOpacity>
-      <Text style={styles.countValue}>{count}</Text>
+      <Text style={styles.countValue(type)}>{count}</Text>
       <TouchableOpacity style={styles.plus} onPress={() => plusHandle()}>
         <Plus />
       </TouchableOpacity>
@@ -74,9 +74,9 @@ const styles = StyleSheet.create({
     elevation: 4,
     borderRadius: BORDER_RADIUS.default,
   },
-  countValue: {
+  countValue: (type) => ({
     fontFamily: FONTS.medium,
-    fontSize: SIZES.h3,
+    fontSize: type === 'Mini' ? 18 : SIZES.h3,
     textAlign: 'center',
-  },
+  }),
 });

@@ -21,7 +21,7 @@ export default AddToCart;
 const styles = StyleSheet.create({
   addCart: {
     paddingVertical: 14,
-    paddingHorizontal: 27,
+    paddingHorizontal: 135,
     alignItems: 'center',
     backgroundColor: COLORS.primary,
     shadowColor: '#000',

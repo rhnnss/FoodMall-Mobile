@@ -4,8 +4,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Home, ShopCart, Account} from '../screens';
 import {BottomTabNavigator} from '../components';
 import CardItemDetails from '../screens/CardItemDetails';
-import Products from '../components/Products';
-import {enableScreens} from 'react-native-screens';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();

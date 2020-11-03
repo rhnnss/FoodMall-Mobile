@@ -4,10 +4,8 @@ import {
   Text,
   StyleSheet,
   View,
-  TouchableHighlight,
   Image,
   ActivityIndicator,
-  Button,
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';

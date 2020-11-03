@@ -37,12 +37,15 @@ const ShopCart = ({route}) => {
       <ScrollView>
         <View style={styles.cardContainer}>
           <View style={styles.imageContainer}>
-            <Image source={{uri: image}} style={styles.image} />
+            <Image
+              source={{uri: 'https://i.imgur.com/kRjQpZg.png'}}
+              style={styles.image}
+            />
           </View>
 
           <View style={styles.detailContainer}>
             <View style={styles.detailHeader}>
-              <Text style={styles.labeldetail}>{title}</Text>
+              <Text style={styles.labeldetail}>Tripple Burger Cheese</Text>
 
               <TouchableOpacity style={styles.miniDeleteButton}>
                 <Trash width={trashIcon} height={trashIcon} />
@@ -91,6 +94,9 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   miniDeleteButton: {
+    backgroundColor: COLORS.white,
+    paddingHorizontal: 11,
+    paddingVertical: 11,
     width: 30,
     height: 30,
     borderRadius: BORDER_RADIUS.small,

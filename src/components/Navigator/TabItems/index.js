@@ -11,7 +11,7 @@ import {
 } from '../../../constants/icons';
 
 const TabItems = ({isFocused, onPress, onLongPress, label}) => {
-  const [count, setCount] = useState(200);
+  const [count, setCount] = useState(0);
   const widthIcon = 24;
   const heightIcon = 24;
 
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -10,
     left: 20,
-    backgroundColor: count <= 100 ? COLORS.red : COLORS.green,
+    backgroundColor: COLORS.red,
     width: count <= 100 ? circleSize : circleSize * 1.8,
     height: circleSize,
     borderRadius: 100,

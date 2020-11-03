@@ -28,7 +28,8 @@
     "react-native-share": "^4.0.4",
     "react-native-svg": "^12.1.0",
     "react-native-svg-transformer": "^0.14.3",
-    "react-native-typing-animation": "^0.1.7"
+    "react-native-typing-animation": "^0.1.7",
+    "redux": "^4.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
