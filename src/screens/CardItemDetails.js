@@ -21,9 +21,18 @@ import {
 } from '../constants/icons';
 import {BORDER_RADIUS} from '../constants/themes';
 
-const CardItemDetails = ({route, navigation, type}) => {
+const CardItemDetails = ({route, navigation}) => {
   // const navigation = useNavigation();
-  const {title, image, price, star, description, coma} = route.params;
+  const {
+    value,
+    title,
+    image,
+    price,
+    star,
+    description,
+    coma,
+    addItemToCart,
+  } = route.params;
   const arrIcon = 40;
   const shareIcon = 30;
   const starIcon = 20;
@@ -134,7 +143,7 @@ const CardItemDetails = ({route, navigation, type}) => {
         <View style={styles.footer}>
           {/* <DetailCountButton type="Large" /> */}
 
-          <AddToCart title={title} image={image} />
+          <AddToCart addItemToCart={addItemToCart} value={value} />
         </View>
       </View>
     </View>

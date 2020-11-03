@@ -1,5 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,60 +6,102 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import {AddToCart, DetailCountButton} from '../components';
-import {COLORS} from '../constants';
 import {ArrowBack, Trash} from '../constants/icons';
+import {COLORS} from '../constants';
 import {BORDER_RADIUS, FONTS, SIZES} from '../constants/themes';
+import {REMOVE_FROM_CART} from '../redux/CartItem';
+import {useNavigation} from '@react-navigation/native';
+import {useSelector, useDispatch} from 'react-redux';
 
 const ShopCart = ({route}) => {
   const arrIcon = 40;
   const trashIcon = 25;
   const navigation = useNavigation();
-  const {title, image} = route.params;
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.headerBtn}
-          onPress={() => navigation.goBack()}>
-          <ArrowBack width={arrIcon} height={arrIcon} />
-        </TouchableOpacity>
+  const cartItems = useSelector((state) => state);
 
-        <TouchableOpacity style={styles.deleteBtn}>
-          <Text style={styles.labelDelete}>Hapus Semua</Text>
-        </TouchableOpacity>
-      </View>
+  let modul = cartItems.map((value, index) => {
+    const convertToRupiah = (angka) => {
+      var rupiah = '';
+      var angkarev = angka.toString().split('').reverse().join('');
+      for (var i = 0; i < angkarev.length; i++)
+        if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
+      return (
+        'Rp. ' +
+        rupiah
+          .split('', rupiah.length - 1)
+          .reverse()
+          .join('')
+      );
+    };
 
-      {/* Card */}
-      <ScrollView>
-        <View style={styles.cardContainer}>
-          <View style={styles.imageContainer}>
-            <Image
-              source={{uri: 'https://i.imgur.com/kRjQpZg.png'}}
-              style={styles.image}
-            />
+    const dispatch = useDispatch();
+    const removeItemFromCart = (value) =>
+      dispatch({
+        type: REMOVE_FROM_CART,
+        payload: value,
+      });
+
+    return (
+      <View style={styles.cardContainer} key={index}>
+        <View style={styles.imageContainer}>
+          <Image
+            source={{uri: 'https://i.imgur.com/kRjQpZg.png'}}
+            style={styles.image}
+          />
+        </View>
+
+        <View style={styles.detailContainer}>
+          <View style={styles.detailHeader}>
+            <Text style={styles.labeldetail}>{value.nama}</Text>
+
+            <TouchableOpacity
+              style={styles.miniDeleteButton}
+              onPress={() => removeItemFromCart(value)}>
+              <Trash width={trashIcon} height={trashIcon} />
+            </TouchableOpacity>
           </View>
 
-          <View style={styles.detailContainer}>
-            <View style={styles.detailHeader}>
-              <Text style={styles.labeldetail}>Tripple Burger Cheese</Text>
-
-              <TouchableOpacity style={styles.miniDeleteButton}>
-                <Trash width={trashIcon} height={trashIcon} />
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.detailFooter}>
-              <DetailCountButton type="Mini" />
-              <Text style={styles.valuePrice}>Rp. 25.000</Text>
-            </View>
+          <View style={styles.detailFooter}>
+            <DetailCountButton type="Mini" />
+            <Text style={styles.valuePrice}>
+              {convertToRupiah(value.harga)}
+            </Text>
           </View>
         </View>
-      </ScrollView>
-    </View>
-  );
+      </View>
+    );
+  });
+
+  if (cartItems.length > 0) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.headerBtn}
+            onPress={() => navigation.goBack()}>
+            <ArrowBack width={arrIcon} height={arrIcon} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.deleteBtn}>
+            <Text style={styles.labelDelete}>Hapus Semua</Text>
+          </TouchableOpacity>
+        </View>
+        <ScrollView>{modul}</ScrollView>
+      </View>
+    );
+  } else {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={{fontFamily: FONTS.medium, fontSize: SIZES.h1}}>
+          No Items in Your Cart
+        </Text>
+      </View>
+    );
+  }
 };
 
 export default ShopCart;
@@ -76,6 +117,7 @@ const styles = StyleSheet.create({
   header: {
     justifyContent: 'space-between',
     flexDirection: 'row',
+    marginBottom: 36,
   },
   headerBtn: {
     backgroundColor: COLORS.white,
@@ -130,13 +172,13 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flexDirection: 'row',
-    marginTop: 38,
     justifyContent: 'space-evenly',
     backgroundColor: COLORS.greyLight2,
     paddingHorizontal: 13,
     paddingVertical: 16,
     borderRadius: BORDER_RADIUS.default,
     alignItems: 'center',
+    marginBottom: 15,
   },
   detailContainer: {
     justifyContent: 'space-between',

@@ -9,8 +9,10 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
+import {useDispatch} from 'react-redux';
 import {COLORS, FONTS, images, SIZES} from '../../constants';
 import {StarActive, StarNonActive} from '../../constants/icons';
+import {ADD_TO_CART} from '../../redux/CartItem';
 
 const Products = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -27,7 +29,7 @@ const Products = () => {
       });
   }, []);
 
-  let modul = dataSource.map((value) => {
+  let modul = dataSource.map((value, index) => {
     const Star = () => {
       if (value.star === '5')
         return (
@@ -101,12 +103,17 @@ const Products = () => {
       );
     };
 
+    const dispatch = useDispatch();
+    const addItemToCart = (value) =>
+      dispatch({type: ADD_TO_CART, payload: value});
+
     return (
-      <View>
+      <View key={index}>
         <TouchableOpacity
           style={styles.button}
           onPress={() =>
             navigation.navigate('CardItemDetails', {
+              value: value,
               id: value.id,
               title: value.nama,
               image: value.icon,
@@ -114,9 +121,9 @@ const Products = () => {
               star: value.star,
               description: value.deskripsi,
               coma: convertToRupiah,
+              addItemToCart: addItemToCart,
             })
-          }
-          key={value.id}>
+          }>
           <ImageBackground
             source={{uri: value.background}}
             style={styles.backgroundProduct}>
@@ -129,7 +136,6 @@ const Products = () => {
               {convertToRupiah(value.harga)}
             </Text>
           </View>
-
           <Star />
         </TouchableOpacity>
       </View>

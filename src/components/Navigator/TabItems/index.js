@@ -9,11 +9,16 @@ import {
   UserActive,
   UserNonActive,
 } from '../../../constants/icons';
+// import {connect} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const TabItems = ({isFocused, onPress, onLongPress, label}) => {
-  const [count, setCount] = useState(0);
   const widthIcon = 24;
   const heightIcon = 24;
+  const cartItems = useSelector((state) => state);
+  // const [count, setCount] = useState(cartItems.length);
+
+  const count = cartItems.length;
 
   function Icon() {
     if (label === 'Home')
