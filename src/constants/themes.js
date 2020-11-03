@@ -10,6 +10,7 @@ export const COLORS = {
   green: '#5BEC95',
   grey: '#6F6F6F',
   greyLight: '#BDBDBD',
+  greyLight2: '#F3F1F1',
   blackTransparant: 'rgba(66, 66, 66, 0.52)',
 };
 
@@ -26,8 +27,16 @@ export const SIZES = {
   h3: 14,
   body1: 13.62,
   body2: 12,
+  body3: 16.62,
 };
 
-const AppThemes = {COLORS, FONTS, SIZES};
+export const BORDER_RADIUS = {
+  default: 10,
+  regular: 14,
+  medium: 38,
+  small: 7,
+};
+
+const AppThemes = {COLORS, FONTS, SIZES, BORDER_RADIUS};
 
 export default AppThemes;

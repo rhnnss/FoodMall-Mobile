@@ -1,37 +1,44 @@
 [
     {
-        "image": "require('../../assets/images/Avatar.png')",
+        "image": "https://i.imgur.com/ztqPzmF.png",
         "name": "Triple Burger with Cheese",
-        "price": 55500
+        "price": 55500,
+        "star": 3
     },
     {
-        "image": "/img/Beef Burger Duluxe.png",
+        "image": "https://i.imgur.com/ztqPzmF.png",
         "name": "Beef Burger Deluxe",
-        "price": 150000
+        "price": 150000,
+        "star": 5
     },
     {
-        "image": "/img/Egg-and-Cheese-Muffin.png",
+        "image": "https://i.imgur.com/ztqPzmF.png",
         "name": "Egg and Cheese Muffin",
-        "price": 56000
+        "price": 56000,
+        "star": 1
     },
     {
-        "image": "/img/Sausage-McMuffin-with-Egg.png",
+        "image": "https://i.imgur.com/ztqPzmF.png",
         "name": "Sausage McMuffin with Egg",
-        "price": 26000
+        "price": 26000,
+        "star": 2
     },
     {
-        "image": "/img/Hotcakes-3-pcs.png",
+        "image": "https://i.imgur.com/ztqPzmF.png",
         "name": "Hotcakes 3 pcs",
-        "price": 35800
+        "price": 35800,
+        "star": 5
     },
     {
-        "image": "/img/Hashbrown.png",
+        "image": "https://i.imgur.com/ztqPzmF.png",
         "name": "Hashbrown",
-        "price": 39999
+        "price": 39999,
+        "star": 3
     },
     {
-        "image": "/img/Nasi-Uduk-McD-Ayam-Suwir.png",
+        "image": "https://i.imgur.com/ztqPzmF.png",
         "name": "Nasi Uduk McD Ayam Suwir",
-        "price": 25000
+        "price": 25000,
+        "star": 4
     }
 ]

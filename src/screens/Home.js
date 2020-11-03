@@ -7,12 +7,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Search, Category, SortModal, RandomProducts} from '../components';
+import {Search, Category, SortModal, Products} from '../components';
 import {images, FONTS, SIZES, COLORS} from '../constants';
 import {ArrowDown} from '../constants/icons';
 import LinearGradient from 'react-native-linear-gradient';
-import Products from '../components/Products';
-import TestApi from '../components/TestApi';
 
 const Home = () => {
   let popupRef = React.createRef();
@@ -24,21 +22,6 @@ const Home = () => {
   const onClosePopup = () => {
     popupRef.close();
   };
-
-  const popupList = [
-    {
-      id: 1,
-      name: 'Sortby Name',
-    },
-    {
-      id: 2,
-      name: 'Sortby Higher Price',
-    },
-    {
-      id: 3,
-      name: 'Sortby Lower Price',
-    },
-  ];
 
   return (
     <ScrollView style={styles.page}>
@@ -93,7 +76,6 @@ const Home = () => {
           ref={(target) => (popupRef = target)}
           onTouchOutside={onClosePopup}
           title="You Wanna Sortby"
-          data={popupList}
         />
       </View>
     </ScrollView>

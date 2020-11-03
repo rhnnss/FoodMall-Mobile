@@ -9,6 +9,7 @@ import {
   FlatList,
 } from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
+import {SortAbjad, SortLower, SortHigh} from '../../constants/icons';
 
 const deviceHeight = Dimensions.get('window').height;
 
@@ -17,6 +18,20 @@ export default class SortModal extends Component {
     super(props);
     this.state = {
       show: false,
+      dataSource: [
+        {
+          id: 1,
+          name: 'Sortby A to Z',
+        },
+        {
+          id: 2,
+          name: 'Sortby Higher Price',
+        },
+        {
+          id: 3,
+          name: 'Sortby Lower Price',
+        },
+      ],
     };
   }
 
@@ -48,7 +63,7 @@ export default class SortModal extends Component {
         <Text
           style={{
             color: COLORS.black,
-            fontSize: SIZES.h2,
+            fontSize: SIZES.h1,
             fontFamily: FONTS.medium,
             margin: 15,
           }}>
@@ -59,19 +74,20 @@ export default class SortModal extends Component {
   };
 
   renderContent = () => {
-    const {data} = this.props;
+    const {dataSource} = this.state;
+
     return (
       <View>
         <FlatList
           style={{marginBottom: 20}}
           showsVerticalScrollIndicator={false}
-          data={data}
+          data={dataSource}
           renderItem={this.renderItem}
-          extraData={data}
+          extraData={dataSource}
           keyExtractor={(item, index) => index.toString()}
           ItemSeparatorComponent={this.renderSeparator}
           contentContainerStyle={{
-            paddingBottom: 40,
+            paddingBottom: 30,
           }}
         />
       </View>
@@ -79,20 +95,35 @@ export default class SortModal extends Component {
   };
 
   renderItem = ({item}) => {
+    const Icons = () => {
+      if (item.id === 1) {
+        return <SortAbjad width={20} height={20} />;
+      }
+      if (item.id === 2) {
+        return <SortHigh width={24} height={24} />;
+      }
+      if (item.id === 3) {
+        return <SortLower width={24} height={24} />;
+      }
+    };
+
     return (
       <View
         style={{
           height: 50,
           flex: 1,
-          alignItems: 'flex-start',
-          justifyContent: 'center',
+          alignItems: 'center',
           marginLeft: 20,
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
         }}>
+        <Icons />
         <Text
           style={{
             color: COLORS.black,
-            fontSize: SIZES.h3,
+            fontSize: SIZES.h2,
             fontFamily: FONTS.medium,
+            marginLeft: 20,
           }}>
           {item.name}
         </Text>

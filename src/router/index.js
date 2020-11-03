@@ -3,6 +3,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Home, ShopCart, Account} from '../screens';
 import {BottomTabNavigator} from '../components';
+import CardItemDetails from '../screens/CardItemDetails';
+import Products from '../components/Products';
+import {enableScreens} from 'react-native-screens';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -25,6 +28,11 @@ const Router = () => {
       <Stack.Screen
         name="MainApp"
         component={MainApp}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="CardItemDetails"
+        component={CardItemDetails}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

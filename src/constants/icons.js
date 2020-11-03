@@ -30,6 +30,10 @@ import Ikan from '../assets/icons/Ikan';
 import Minuman from '../assets/icons/Minuman';
 import Camilan from '../assets/icons/Camilan';
 
+import SortAbjad from '../assets/icons/AbjadSort';
+import SortLower from '../assets/icons/LowerHigh';
+import SortHigh from '../assets/icons/PriceHigh';
+
 export {
   ArrowBack,
   ArrowDown,
@@ -60,4 +64,7 @@ export {
   Ikan,
   Minuman,
   Camilan,
+  SortAbjad,
+  SortLower,
+  SortHigh,
 };

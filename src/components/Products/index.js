@@ -1,142 +1,155 @@
-import React, {Component} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
   View,
-  FlatList,
   TouchableHighlight,
-  ScrollView,
   Image,
   ActivityIndicator,
+  Button,
+  TouchableOpacity,
+  ImageBackground,
 } from 'react-native';
 import {COLORS, FONTS, images, SIZES} from '../../constants';
 import {StarActive, StarNonActive} from '../../constants/icons';
 
-export default class Products extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      dataSource: [],
-    };
-  }
+const Products = () => {
+  const [dataSource, setDataSource] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigation = useNavigation();
 
-  componentDidMount() {
+  useEffect(() => {
     fetch('http://192.168.100.12:4090/newProducts')
       .then((response) => response.json())
       .then((responseJson) => {
         console.log(responseJson);
-        this.setState({
-          isLoading: false,
-          dataSource: responseJson,
-        });
+        setDataSource(responseJson);
+        setIsLoading(false);
       });
-  }
+  }, []);
 
-  render() {
-    let modul = this.state.dataSource.map((value) => {
-      const Star = () => {
-        if (value.star === '5')
-          return (
-            <View style={styles.rating}>
-              <StarActive />
-              <StarActive />
-              <StarActive />
-              <StarActive />
-              <StarActive />
-            </View>
-          );
-        if (value.star === '4')
-          return (
-            <View style={styles.rating}>
-              <StarActive />
-              <StarActive />
-              <StarActive />
-              <StarActive />
-              <StarNonActive />
-            </View>
-          );
-        if (value.star === '3')
-          return (
-            <View style={styles.rating}>
-              <StarActive />
-              <StarActive />
-              <StarActive />
-              <StarNonActive />
-              <StarNonActive />
-            </View>
-          );
-        if (value.star === '2')
-          return (
-            <View style={styles.rating}>
-              <StarActive />
-              <StarActive />
-              <StarNonActive />
-              <StarNonActive />
-              <StarNonActive />
-            </View>
-          );
-        if (value.star === '1')
-          return (
-            <View style={styles.rating}>
-              <StarActive />
-              <StarNonActive />
-              <StarNonActive />
-              <StarNonActive />
-              <StarNonActive />
-            </View>
-          );
-        if (value.star === '0')
-          return (
-            <View style={styles.rating}>
-              <Text>Maaf Belum di Nilai!</Text>
-            </View>
-          );
-      };
-
-      const convertToRupiah = (angka) => {
-        var rupiah = '';
-        var angkarev = angka.toString().split('').reverse().join('');
-        for (var i = 0; i < angkarev.length; i++)
-          if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
+  let modul = dataSource.map((value) => {
+    const Star = () => {
+      if (value.star === '5')
         return (
-          'Rp. ' +
-          rupiah
-            .split('', rupiah.length - 1)
-            .reverse()
-            .join('')
-        );
-      };
-
-      return (
-        <TouchableHighlight style={styles.container} key={value.id}>
-          <View style={styles.button}>
-            <Image source={{uri: value.icon}} style={styles.product} />
-            <View style={styles.info}>
-              <Text style={styles.labelTitle}>{value.nama}</Text>
-              <Text style={styles.valuePrice}>
-                {convertToRupiah(value.harga)}
-              </Text>
-            </View>
-            <Star />
+          <View style={styles.rating}>
+            <StarActive />
+            <StarActive />
+            <StarActive />
+            <StarActive />
+            <StarActive />
           </View>
-        </TouchableHighlight>
-      );
-    });
+        );
+      if (value.star === '4')
+        return (
+          <View style={styles.rating}>
+            <StarActive />
+            <StarActive />
+            <StarActive />
+            <StarActive />
+            <StarNonActive />
+          </View>
+        );
+      if (value.star === '3')
+        return (
+          <View style={styles.rating}>
+            <StarActive />
+            <StarActive />
+            <StarActive />
+            <StarNonActive />
+            <StarNonActive />
+          </View>
+        );
+      if (value.star === '2')
+        return (
+          <View style={styles.rating}>
+            <StarActive />
+            <StarActive />
+            <StarNonActive />
+            <StarNonActive />
+            <StarNonActive />
+          </View>
+        );
+      if (value.star === '1')
+        return (
+          <View style={styles.rating}>
+            <StarActive />
+            <StarNonActive />
+            <StarNonActive />
+            <StarNonActive />
+            <StarNonActive />
+          </View>
+        );
+      if (value.star === '0')
+        return (
+          <View style={styles.rating}>
+            <Text>Maaf Belum di Nilai!</Text>
+          </View>
+        );
+    };
 
-    let {isLoading} = this.state;
-
-    if (isLoading) {
+    const convertToRupiah = (angka) => {
+      var rupiah = '';
+      var angkarev = angka.toString().split('').reverse().join('');
+      for (var i = 0; i < angkarev.length; i++)
+        if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
       return (
-        <View>
-          <ActivityIndicator size="large" animating />
-        </View>
+        'Rp. ' +
+        rupiah
+          .split('', rupiah.length - 1)
+          .reverse()
+          .join('')
       );
-    } else {
-      return <View style={styles.page}>{modul}</View>;
-    }
+    };
+
+    return (
+      <View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() =>
+            navigation.navigate('CardItemDetails', {
+              id: value.id,
+              title: value.nama,
+              image: value.icon,
+              price: value.harga,
+              star: value.star,
+              description: value.deskripsi,
+              coma: convertToRupiah,
+            })
+          }
+          key={value.id}>
+          <ImageBackground
+            source={{uri: value.background}}
+            style={styles.backgroundProduct}>
+            <Image source={{uri: value.icon}} style={styles.product} />
+          </ImageBackground>
+
+          <View style={styles.info}>
+            <Text style={styles.labelTitle}>{value.nama}</Text>
+            <Text style={styles.valuePrice}>
+              {convertToRupiah(value.harga)}
+            </Text>
+          </View>
+
+          <Star />
+        </TouchableOpacity>
+      </View>
+    );
+  });
+
+  if (isLoading) {
+    return (
+      <View>
+        <ActivityIndicator size="large" animating />
+      </View>
+    );
+  } else {
+    return <View style={styles.page}>{modul}</View>;
   }
-}
+};
+
+export default Products;
 
 const styles = StyleSheet.create({
   Icon: {
@@ -164,7 +177,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
-    elevation: 6,
+    elevation: 4,
     marginTop: 28,
     alignItems: 'center',
     justifyContent: 'center',
@@ -191,7 +204,13 @@ const styles = StyleSheet.create({
     marginTop: 7,
   },
   product: {
+    width: 73,
+    height: 57.16,
+  },
+  backgroundProduct: {
     width: 98.17,
     height: 98.17,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

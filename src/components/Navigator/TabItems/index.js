@@ -1,5 +1,5 @@
-import React from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../../constants';
 import {
   HomeActive,
@@ -10,10 +10,11 @@ import {
   UserNonActive,
 } from '../../../constants/icons';
 
-const widthIcon = 20;
-const heightIcon = 20;
-
 const TabItems = ({isFocused, onPress, onLongPress, label}) => {
+  const [count, setCount] = useState(200);
+  const widthIcon = 24;
+  const heightIcon = 24;
+
   function Icon() {
     if (label === 'Home')
       return isFocused ? (
@@ -36,11 +37,31 @@ const TabItems = ({isFocused, onPress, onLongPress, label}) => {
 
     return <HomeActive />;
   }
+
+  const Item = () => {
+    return (
+      <View style={styles.badge(count)}>
+        <Text style={styles.valueBadge}>{count}</Text>
+      </View>
+    );
+  };
+
+  const Badge = () => {
+    if (label === 'Shop' && count <= 100) {
+      return <Item />;
+    } else if (label === 'Shop' && count >= 101) {
+      return <Item />;
+    }
+
+    return Badge;
+  };
+
   return (
     <TouchableOpacity
       onPress={onPress}
       onLongPress={onLongPress}
       style={styles.container}>
+      <Badge />
       <Icon />
       <Text style={styles.text(isFocused)}>{label}</Text>
     </TouchableOpacity>
@@ -48,6 +69,8 @@ const TabItems = ({isFocused, onPress, onLongPress, label}) => {
 };
 
 export default TabItems;
+
+const circleSize = 22;
 
 const styles = StyleSheet.create({
   container: {
@@ -59,4 +82,20 @@ const styles = StyleSheet.create({
     fontSize: SIZES.default,
     fontFamily: isFocused ? FONTS.bold : FONTS.regular,
   }),
+  badge: (count) => ({
+    position: 'absolute',
+    top: -10,
+    left: 20,
+    backgroundColor: count <= 100 ? COLORS.red : COLORS.green,
+    width: count <= 100 ? circleSize : circleSize * 1.8,
+    height: circleSize,
+    borderRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  }),
+  valueBadge: {
+    fontFamily: FONTS.medium,
+    fontSize: SIZES.default,
+    color: COLORS.white,
+  },
 });
