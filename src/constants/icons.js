@@ -18,6 +18,7 @@ import StarActive from '../assets/icons/StarActive';
 import StarNonActive from '../assets/icons/StarNonActive';
 import Trash from '../assets/icons/Trash';
 import Pencil from '../assets/icons/Pencil';
+import Close from '../assets/icons/Close';
 
 import CategoryBurger from '../assets/icons/CategoryBurger';
 import CategoryNasduk from '../assets/icons/CategoryNasduk';
@@ -67,4 +68,5 @@ export {
   SortAbjad,
   SortLower,
   SortHigh,
+  Close,
 };

@@ -35,6 +35,7 @@ export const BORDER_RADIUS = {
   regular: 14,
   medium: 38,
   small: 7,
+  verySmall: 5,
 };
 
 const AppThemes = {COLORS, FONTS, SIZES, BORDER_RADIUS};

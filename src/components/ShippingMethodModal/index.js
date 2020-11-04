@@ -7,13 +7,15 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
-import {SortAbjad, SortLower, SortHigh} from '../../constants/icons';
+import {SortAbjad, SortLower, SortHigh, Close} from '../../constants/icons';
+import {BORDER_RADIUS} from '../../constants/themes';
 
 const deviceHeight = Dimensions.get('window').height;
 
-export default class SortModal extends Component {
+export default class ShippingMethodModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,15 +23,18 @@ export default class SortModal extends Component {
       dataSource: [
         {
           id: 1,
-          name: 'Sortby A to Z',
+          name: 'Grab',
+          price: 45000,
         },
         {
           id: 2,
-          name: 'Sortby Higher Price',
+          name: 'Gojek',
+          price: 25000,
         },
         {
           id: 3,
-          name: 'Sortby Lower Price',
+          name: 'Kurir Toko',
+          price: 15000,
         },
       ],
     };
@@ -57,15 +62,26 @@ export default class SortModal extends Component {
   }
 
   renderTitle = () => {
-    const {title} = this.props;
+    const {title, onTouchOutside} = this.props;
+
     return (
-      <View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingTop: 30,
+          marginBottom: 25,
+          justifyContent: 'flex-start',
+        }}>
+        <TouchableOpacity onPress={onTouchOutside}>
+          <Close width={35} height={35} />
+        </TouchableOpacity>
         <Text
           style={{
             color: COLORS.black,
             fontSize: SIZES.h1,
             fontFamily: FONTS.medium,
-            margin: 15,
+            marginLeft: 20,
           }}>
           {title}
         </Text>
@@ -77,6 +93,7 @@ export default class SortModal extends Component {
     const {dataSource} = this.state;
 
     return (
+      // {*----------------- FlatList -----------------*/}
       <View>
         <FlatList
           style={{marginBottom: 20}}
@@ -85,7 +102,6 @@ export default class SortModal extends Component {
           renderItem={this.renderItem}
           extraData={dataSource}
           keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={this.renderSeparator}
           contentContainerStyle={{
             paddingBottom: 30,
           }}
@@ -95,16 +111,18 @@ export default class SortModal extends Component {
   };
 
   renderItem = ({item}) => {
-    const Icons = () => {
-      if (item.id === 1) {
-        return <SortAbjad width={20} height={20} />;
-      }
-      if (item.id === 2) {
-        return <SortHigh width={24} height={24} />;
-      }
-      if (item.id === 3) {
-        return <SortLower width={24} height={24} />;
-      }
+    const convertToRupiah = (angka) => {
+      var rupiah = '';
+      var angkarev = angka.toString().split('').reverse().join('');
+      for (var i = 0; i < angkarev.length; i++)
+        if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
+      return (
+        'Rp. ' +
+        rupiah
+          .split('', rupiah.length - 1)
+          .reverse()
+          .join('')
+      );
     };
 
     return (
@@ -113,33 +131,37 @@ export default class SortModal extends Component {
           height: 50,
           flex: 1,
           alignItems: 'center',
-          marginLeft: 20,
+          paddingHorizontal: 22,
+          paddingVertical: 40,
           flexDirection: 'row',
-          justifyContent: 'flex-start',
+          justifyContent: 'space-between',
+          backgroundColor: COLORS.greyLight2,
+          borderRadius: BORDER_RADIUS.regular,
+          marginBottom: 10,
         }}>
-        <Icons />
         <Text
           style={{
             color: COLORS.black,
             fontSize: SIZES.h2,
             fontFamily: FONTS.medium,
-            marginLeft: 20,
           }}>
           {item.name}
+        </Text>
+        <Text
+          style={{
+            color: COLORS.black,
+            fontSize: SIZES.h2,
+            fontFamily: FONTS.medium,
+          }}>
+          {convertToRupiah(item.price)}
         </Text>
       </View>
     );
   };
 
-  renderSeparator = () => {
-    return (
-      <View style={{opacity: 0.1, backgroundColor: COLORS.grey, height: 2}} />
-    );
-  };
-
   render() {
     let {show} = this.state;
-    const {onTouchOutside, title} = this.props;
+    const {onTouchOutside} = this.props;
 
     return (
       <Modal
@@ -161,7 +183,7 @@ export default class SortModal extends Component {
               borderTopRightRadius: 14,
               borderTopLeftRadius: 14,
               paddingHorizontal: 10,
-              maxHeight: deviceHeight * 0.4,
+              maxHeight: deviceHeight * 0.5,
             }}>
             {this.renderTitle()}
             {this.renderContent()}

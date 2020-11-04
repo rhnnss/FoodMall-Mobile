@@ -6,6 +6,7 @@ import SortModal from './SortModal';
 import Products from './Products';
 import DetailCountButton from './DetailCountButton';
 import AddToCart from './AddToCart';
+import ShippingMethodModal from './ShippingMethodModal';
 
 export {
   BottomTabNavigator,
@@ -16,4 +17,5 @@ export {
   Products,
   DetailCountButton,
   AddToCart,
+  ShippingMethodModal,
 };

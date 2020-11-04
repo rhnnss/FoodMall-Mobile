@@ -108,37 +108,34 @@ const Products = () => {
       dispatch({type: ADD_TO_CART, payload: value});
 
     return (
-      <View key={index}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() =>
-            navigation.navigate('CardItemDetails', {
-              value: value,
-              id: value.id,
-              title: value.nama,
-              image: value.icon,
-              price: value.harga,
-              star: value.star,
-              description: value.deskripsi,
-              coma: convertToRupiah,
-              addItemToCart: addItemToCart,
-            })
-          }>
-          <ImageBackground
-            source={{uri: value.background}}
-            style={styles.backgroundProduct}>
-            <Image source={{uri: value.icon}} style={styles.product} />
-          </ImageBackground>
+      <TouchableOpacity
+        style={styles.button}
+        key={index}
+        onPress={() =>
+          navigation.navigate('CardItemDetails', {
+            value: value,
+            id: value.id,
+            title: value.nama,
+            image: value.icon,
+            price: value.harga,
+            star: value.star,
+            description: value.deskripsi,
+            coma: convertToRupiah,
+            addItemToCart: addItemToCart,
+          })
+        }>
+        <ImageBackground
+          source={{uri: value.background}}
+          style={styles.backgroundProduct}>
+          <Image source={{uri: value.icon}} style={styles.product} />
+        </ImageBackground>
 
-          <View style={styles.info}>
-            <Text style={styles.labelTitle}>{value.nama}</Text>
-            <Text style={styles.valuePrice}>
-              {convertToRupiah(value.harga)}
-            </Text>
-          </View>
-          <Star />
-        </TouchableOpacity>
-      </View>
+        <View style={styles.info}>
+          <Text style={styles.labelTitle}>{value.nama}</Text>
+          <Text style={styles.valuePrice}>{convertToRupiah(value.harga)}</Text>
+        </View>
+        <Star />
+      </TouchableOpacity>
     );
   });
 
@@ -186,6 +183,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 14,
+    position: 'relative',
   },
   rating: {
     flexDirection: 'row',

@@ -16,7 +16,6 @@ const TabItems = ({isFocused, onPress, onLongPress, label}) => {
   const widthIcon = 24;
   const heightIcon = 24;
   const cartItems = useSelector((state) => state);
-  // const [count, setCount] = useState(cartItems.length);
 
   const count = cartItems.length;
 

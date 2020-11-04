@@ -7,9 +7,10 @@ import {
   ScrollView,
   Image,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
-import {AddToCart, DetailCountButton} from '../components';
-import {ArrowBack, Trash} from '../constants/icons';
+import {AddToCart, DetailCountButton, ShippingMethodModal} from '../components';
+import {ArrowBack, ArrowDown, CarShipping, Trash} from '../constants/icons';
 import {COLORS} from '../constants';
 import {BORDER_RADIUS, FONTS, SIZES} from '../constants/themes';
 import {REMOVE_FROM_CART} from '../redux/CartItem';
@@ -20,6 +21,15 @@ const ShopCart = ({route}) => {
   const arrIcon = 40;
   const trashIcon = 25;
   const navigation = useNavigation();
+
+  let popupRef = React.createRef();
+
+  const onShowPopup = () => {
+    popupRef.show();
+  };
+  const onClosePopup = () => {
+    popupRef.close();
+  };
 
   const cartItems = useSelector((state) => state);
 
@@ -90,7 +100,39 @@ const ShopCart = ({route}) => {
             <Text style={styles.labelDelete}>Hapus Semua</Text>
           </TouchableOpacity>
         </View>
-        <ScrollView>{modul}</ScrollView>
+
+        <ScrollView style={styles.productContainer}>{modul}</ScrollView>
+
+        {/*----------------- Modal -----------------*/}
+        <ShippingMethodModal
+          ref={(target) => (popupRef = target)}
+          onTouchOutside={onClosePopup}
+          title="Pilih Pengiriman"
+        />
+
+        <View style={styles.footer}>
+          {/*----------------- Trigger -----------------*/}
+          <View style={{alignItems: 'center'}}>
+            <TouchableOpacity
+              style={styles.triggerModalContainer}
+              onPress={onShowPopup}>
+              <CarShipping width={24} height={24} />
+              <Text style={styles.labelModal}>Pilih Pengiriman</Text>
+              <ArrowDown width={24} height={24} />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.footerBottom}>
+            <View style={styles.footerPriceContainer}>
+              <Text style={styles.labelFooterPrice}>Total Harga</Text>
+              <Text style={styles.valueFooterPrice}>Rp. 150.000</Text>
+            </View>
+
+            <TouchableOpacity style={styles.pembayaranBtn}>
+              <Text style={styles.labelPembayaran}>Pembayaran</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     );
   } else {
@@ -106,18 +148,24 @@ const ShopCart = ({route}) => {
 
 export default ShopCart;
 
+const deviceWidht = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 22,
-    paddingVertical: 36,
     backgroundColor: COLORS.white,
     width: '100%',
     height: '100%',
   },
   header: {
+    paddingHorizontal: 22,
+    paddingTop: 36,
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginBottom: 36,
+  },
+  productContainer: {
+    paddingHorizontal: 22,
   },
   headerBtn: {
     backgroundColor: COLORS.white,
@@ -167,8 +215,8 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   image: {
-    width: 60,
-    height: 60,
+    width: deviceWidht * 0.14,
+    height: deviceHeight * 0.08,
   },
   cardContainer: {
     flexDirection: 'row',
@@ -194,7 +242,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   labeldetail: {
-    width: 210,
+    width: deviceWidht * 0.5,
     fontFamily: FONTS.medium,
     fontSize: SIZES.body3,
     textAlign: 'left',
@@ -204,5 +252,57 @@ const styles = StyleSheet.create({
     fontSize: SIZES.body3,
     textAlign: 'center',
     color: COLORS.black,
+  },
+  footer: {
+    backgroundColor: COLORS.white,
+    width: '100%',
+    height: deviceHeight * 0.2,
+    paddingHorizontal: 22,
+    paddingTop: 36,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 12,
+      height: 12,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 40,
+    elevation: 40,
+  },
+  triggerModalContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: 217,
+  },
+  labelModal: {
+    fontFamily: FONTS.medium,
+    fontSize: SIZES.body3,
+  },
+  footerBottom: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  footerPriceContainer: {
+    marginTop: 20,
+  },
+  labelFooterPrice: {
+    fontFamily: FONTS.medium,
+    fontSize: SIZES.body3,
+  },
+  valueFooterPrice: {
+    fontFamily: FONTS.regular,
+    fontSize: SIZES.body3,
+  },
+  pembayaranBtn: {
+    paddingHorizontal: 34,
+    paddingVertical: 15,
+    backgroundColor: COLORS.primary,
+    borderRadius: BORDER_RADIUS.verySmall,
+  },
+  labelPembayaran: {
+    fontFamily: FONTS.medium,
+    fontSize: SIZES.body2,
+    color: COLORS.white,
   },
 });
