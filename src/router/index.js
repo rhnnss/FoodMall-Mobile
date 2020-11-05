@@ -4,6 +4,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Home, ShopCart, Account} from '../screens';
 import {BottomTabNavigator} from '../components';
 import CardItemDetails from '../screens/CardItemDetails';
+import PaymentMethod from '../screens/PaymentMethod';
+import FinishPayment from '../screens/FinishPayment';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -31,6 +33,16 @@ const Router = () => {
       <Stack.Screen
         name="CardItemDetails"
         component={CardItemDetails}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="PaymentMethod"
+        component={PaymentMethod}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="FinishPayment"
+        component={FinishPayment}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

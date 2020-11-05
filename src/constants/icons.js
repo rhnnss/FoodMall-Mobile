@@ -35,6 +35,10 @@ import SortAbjad from '../assets/icons/AbjadSort';
 import SortLower from '../assets/icons/LowerHigh';
 import SortHigh from '../assets/icons/PriceHigh';
 
+import Bank from '../assets/icons/Bank';
+import Ceriamart from '../assets/icons/Ceriamart';
+import Cash from '../assets/icons/Cash';
+
 export {
   ArrowBack,
   ArrowDown,
@@ -69,4 +73,7 @@ export {
   SortLower,
   SortHigh,
   Close,
+  Bank,
+  Ceriamart,
+  Cash,
 };

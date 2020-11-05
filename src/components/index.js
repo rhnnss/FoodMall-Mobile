@@ -7,6 +7,8 @@ import Products from './Products';
 import DetailCountButton from './DetailCountButton';
 import AddToCart from './AddToCart';
 import ShippingMethodModal from './ShippingMethodModal';
+import PaymentVia from './PaymentVia';
+import AdressDeliveryModal from './AdressDeliveryModal';
 
 export {
   BottomTabNavigator,
@@ -18,4 +20,6 @@ export {
   DetailCountButton,
   AddToCart,
   ShippingMethodModal,
+  PaymentVia,
+  AdressDeliveryModal,
 };

@@ -12,10 +12,11 @@ import {
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {SortAbjad, SortLower, SortHigh, Close} from '../../constants/icons';
 import {BORDER_RADIUS} from '../../constants/themes';
+import {Input} from 'react-native-elements';
 
 const deviceHeight = Dimensions.get('window').height;
 
-export default class ShippingMethodModal extends Component {
+export default class AdressDeliveryModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,16 +26,6 @@ export default class ShippingMethodModal extends Component {
           id: 1,
           name: 'Grab',
           price: 45000,
-        },
-        {
-          id: 2,
-          name: 'Gojek',
-          price: 25000,
-        },
-        {
-          id: 3,
-          name: 'Kurir Toko',
-          price: 15000,
         },
       ],
     };
@@ -90,76 +81,6 @@ export default class ShippingMethodModal extends Component {
     );
   };
 
-  renderContent = () => {
-    const {dataSource} = this.state;
-
-    return (
-      // {*----------------- FlatList -----------------*/}
-      <View>
-        <FlatList
-          style={{marginBottom: 20}}
-          showsVerticalScrollIndicator={false}
-          data={dataSource}
-          renderItem={this.renderItem}
-          extraData={dataSource}
-          keyExtractor={(item, index) => index.toString()}
-          contentContainerStyle={{
-            paddingHorizontal: 20,
-          }}
-        />
-      </View>
-    );
-  };
-
-  renderItem = ({item}) => {
-    const convertToRupiah = (angka) => {
-      var rupiah = '';
-      var angkarev = angka.toString().split('').reverse().join('');
-      for (var i = 0; i < angkarev.length; i++)
-        if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
-      return (
-        'Rp. ' +
-        rupiah
-          .split('', rupiah.length - 1)
-          .reverse()
-          .join('')
-      );
-    };
-
-    return (
-      <View
-        style={{
-          height: 50,
-          flex: 1,
-          alignItems: 'center',
-          paddingHorizontal: 22,
-          paddingVertical: 40,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          backgroundColor: COLORS.greyLight2,
-          borderRadius: BORDER_RADIUS.regular,
-          marginBottom: 10,
-        }}>
-        <Text
-          style={{
-            color: COLORS.black,
-            fontSize: SIZES.h2,
-            fontFamily: FONTS.medium,
-          }}>
-          {item.name}
-        </Text>
-        <Text
-          style={{
-            color: COLORS.black,
-            fontSize: SIZES.h2,
-            fontFamily: FONTS.medium,
-          }}>
-          {convertToRupiah(item.price)}
-        </Text>
-      </View>
-    );
-  };
-
   render() {
     let {show} = this.state;
     const {onTouchOutside} = this.props;
@@ -187,7 +108,32 @@ export default class ShippingMethodModal extends Component {
               maxHeight: deviceHeight * 0.5,
             }}>
             {this.renderTitle()}
-            {this.renderContent()}
+            {/*---------------- Input ---------------- */}
+            <View
+              style={{
+                paddingHorizontal: 20,
+                paddingVertical: 20,
+              }}>
+              <View>
+                <Input
+                  label="Nama Penerima"
+                  labelStyle={{fontFamily: FONTS.medium, fontSize: SIZES.h2}}
+                  placeholder="Your name"
+                  inputStyle={{
+                    fontFamily: FONTS.regular,
+                    fontSize: SIZES.h2,
+                  }}
+                />
+              </View>
+              <View>
+                <Input
+                  label="Alamat Pengiriman"
+                  labelStyle={{fontFamily: FONTS.medium, fontSize: SIZES.h2}}
+                  placeholder="Delivery adress"
+                  inputStyle={{fontFamily: FONTS.regular, fontSize: SIZES.h2}}
+                />
+              </View>
+            </View>
           </View>
         </View>
       </Modal>

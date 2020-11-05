@@ -128,7 +128,9 @@ const ShopCart = ({route}) => {
               <Text style={styles.valueFooterPrice}>Rp. 150.000</Text>
             </View>
 
-            <TouchableOpacity style={styles.pembayaranBtn}>
+            <TouchableOpacity
+              style={styles.pembayaranBtn}
+              onPress={() => navigation.navigate('PaymentMethod')}>
               <Text style={styles.labelPembayaran}>Pembayaran</Text>
             </TouchableOpacity>
           </View>
