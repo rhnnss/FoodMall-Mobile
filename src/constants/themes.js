@@ -12,6 +12,9 @@ export const COLORS = {
   greyLight: '#BDBDBD',
   greyLight2: '#F3F1F1',
   blackTransparant: 'rgba(66, 66, 66, 0.52)',
+  yellowLinear: ['#FF881B', '#FFCF1B'],
+  redLinear: ['#730062', '#F00B51'],
+  greenLinear: ['#00B8BA', '#00FFED'],
 };
 
 export const FONTS = {
@@ -19,6 +22,9 @@ export const FONTS = {
   regular: 'Poppins-Regular',
   medium: 'Poppins-Medium',
   bold: 'Poppins-Bold',
+  SarabunLight: 'Sarabun-Light',
+  SarabunRegular: 'Sarabun-Regular',
+  SarabunMedium: 'Sarabun-Medium',
 };
 export const SIZES = {
   default: 12,

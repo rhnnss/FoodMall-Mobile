@@ -9,6 +9,7 @@ import AddToCart from './AddToCart';
 import ShippingMethodModal from './ShippingMethodModal';
 import PaymentVia from './PaymentVia';
 import AdressDeliveryModal from './AdressDeliveryModal';
+import CardPayment from './CardPayment';
 
 export {
   BottomTabNavigator,
@@ -22,4 +23,5 @@ export {
   ShippingMethodModal,
   PaymentVia,
   AdressDeliveryModal,
+  CardPayment,
 };

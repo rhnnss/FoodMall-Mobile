@@ -122,12 +122,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 10,
   },
-  RandomProduct: {
-    // flexDirection: 'row',
-    // flexWrap: 'wrap',
-    // justifyContent: 'space-between',
-    // marginTop: -20,
-  },
   Category: {
     justifyContent: 'space-between',
     marginTop: 40,

@@ -39,6 +39,10 @@ import Bank from '../assets/icons/Bank';
 import Ceriamart from '../assets/icons/Ceriamart';
 import Cash from '../assets/icons/Cash';
 
+import Visa from '../assets/icons/VISA';
+
+import LogoSplash from '../assets/icons/LogoSplash';
+
 export {
   ArrowBack,
   ArrowDown,
@@ -76,4 +80,6 @@ export {
   Bank,
   Ceriamart,
   Cash,
+  Visa,
+  LogoSplash,
 };

@@ -301,6 +301,15 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     backgroundColor: COLORS.primary,
     borderRadius: BORDER_RADIUS.verySmall,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   },
   labelPembayaran: {
     fontFamily: FONTS.medium,

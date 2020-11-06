@@ -6,6 +6,7 @@ import {BottomTabNavigator} from '../components';
 import CardItemDetails from '../screens/CardItemDetails';
 import PaymentMethod from '../screens/PaymentMethod';
 import FinishPayment from '../screens/FinishPayment';
+import Splash from '../screens/Splash';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -25,6 +26,11 @@ const MainApp = () => {
 const Router = () => {
   return (
     <Stack.Navigator>
+      <Stack.Screen
+        name="Splash"
+        component={Splash}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="MainApp"
         component={MainApp}

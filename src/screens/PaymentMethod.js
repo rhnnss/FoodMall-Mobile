@@ -98,7 +98,7 @@ const PaymentMethod = () => {
         <View style={styles.footerBottom}>
           <View style={styles.footerPriceContainer}>
             <Text style={styles.labelFooterPrice}>Total Harga</Text>
-            <Text style={styles.valueFooterPrice}>Rp 7.800.000</Text>
+            <Text style={styles.valueFooterPrice}>Rp 250.000</Text>
           </View>
 
           <TouchableOpacity
@@ -117,9 +117,11 @@ export default PaymentMethod;
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 22,
+    backgroundColor: COLORS.white,
+    height: '100%',
   },
   title: {
-    fontFamily: FONTS.bold,
+    fontFamily: FONTS.medium,
     fontSize: SIZES.h1,
     marginTop: 35,
   },
@@ -190,6 +192,15 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     backgroundColor: COLORS.primary,
     borderRadius: BORDER_RADIUS.verySmall,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   },
   labelPembayaran: {
     fontFamily: FONTS.medium,
