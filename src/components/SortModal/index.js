@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {SortAbjad, SortLower, SortHigh} from '../../constants/icons';
@@ -108,7 +109,7 @@ export default class SortModal extends Component {
     };
 
     return (
-      <View
+      <TouchableOpacity
         style={{
           height: 50,
           flex: 1,
@@ -127,7 +128,7 @@ export default class SortModal extends Component {
           }}>
           {item.name}
         </Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 

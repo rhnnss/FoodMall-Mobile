@@ -55,7 +55,7 @@ const FinishPayment = () => {
     );
   };
 
-  const Item = DataSource.map((val, id) => {
+  const Item = DataSource.map((val, index) => {
     return (
       <View
         style={{
@@ -63,7 +63,7 @@ const FinishPayment = () => {
           justifyContent: 'space-between',
           marginBottom: 5,
         }}
-        key={id}>
+        key={index}>
         <Text style={{fontFamily: FONTS.medium, fontSize: SIZES.body1}}>
           {val.title}
         </Text>
@@ -91,8 +91,7 @@ const FinishPayment = () => {
           justifyContent: 'space-between',
           marginBottom: 5,
           marginTop: 15,
-        }}
-        key={id}>
+        }}>
         <View
           style={{
             flexDirection: 'row',
