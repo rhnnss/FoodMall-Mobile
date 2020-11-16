@@ -19,6 +19,7 @@ import StarNonActive from '../assets/icons/StarNonActive';
 import Trash from '../assets/icons/Trash';
 import Pencil from '../assets/icons/Pencil';
 import Close from '../assets/icons/Close';
+import Check from '../assets/icons/Check';
 
 import CategoryBurger from '../assets/icons/CategoryBurger';
 import CategoryNasduk from '../assets/icons/CategoryNasduk';
@@ -82,4 +83,5 @@ export {
   Cash,
   Visa,
   LogoSplash,
+  Check,
 };

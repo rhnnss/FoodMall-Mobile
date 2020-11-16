@@ -4,8 +4,8 @@ import {COLORS} from '../../constants';
 import {Minus, Plus} from '../../constants/icons';
 import {BORDER_RADIUS, FONTS, SIZES} from '../../constants/themes';
 
-const DetailCountButton = ({type}) => {
-  const [count, setCount] = useState(1);
+const DetailCountButton = ({type, quantity}) => {
+  const [count, setCount] = useState(quantity);
 
   const plusHandle = () => {
     return setCount(count + 1);

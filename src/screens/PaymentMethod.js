@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Dimensions,
   ScrollView,
@@ -14,14 +14,20 @@ import {BORDER_RADIUS} from '../constants/themes';
 import ToggleSwitch from 'toggle-switch-react-native';
 import {AdressDeliveryModal, PaymentVia} from '../components';
 import {useNavigation} from '@react-navigation/native';
+import Axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PaymentMethod = () => {
+  const navigation = useNavigation();
+  const deviceHeight = Dimensions.get('window').height;
   const [isEnable, setIsEnable] = useState(false);
   const toggleSwitch = () => setIsEnable((previousState) => !previousState);
   const [isOnBlueToggleSwitch, setIsOnBlueToggleSwitch] = useState(false);
-  const navigation = useNavigation();
 
-  const deviceHeight = Dimensions.get('window').height;
+  const [propsName, setPropsName] = useState('Albert Flores');
+  const [propsAddress, setPropsAddress] = useState(
+    '6391 Elgin St. Celina, Delaware 10299',
+  );
 
   let popupRef = React.createRef();
   const onShowPopup = () => {
@@ -31,6 +37,14 @@ const PaymentMethod = () => {
     popupRef.close();
   };
 
+  const getName = (val) => {
+    setPropsName(val);
+  };
+
+  const getAddress = (val) => {
+    setPropsAddress(val);
+  };
+
   return (
     <View style={styles.container}>
       {/*----------------- Modal -----------------*/}
@@ -38,6 +52,8 @@ const PaymentMethod = () => {
         ref={(target) => (popupRef = target)}
         onTouchOutside={onClosePopup}
         title="Alamat Pengiriman"
+        getName={getName}
+        getAddress={getAddress}
       />
 
       {/*----------------- Address -----------------*/}
@@ -48,10 +64,8 @@ const PaymentMethod = () => {
             <Package width={24} height={24} />
           </View>
           <View style={styles.addresTextContainer}>
-            <Text style={styles.labelName}>Albert Flores</Text>
-            <Text style={styles.valueAddres}>
-              6391 Elgin St. Celina, Delaware 10299
-            </Text>
+            <Text style={styles.labelName}>{propsName}</Text>
+            <Text style={styles.valueAddres}>{propsAddress}</Text>
           </View>
           <TouchableOpacity style={styles.pencilIcon} onPress={onShowPopup}>
             <Pencil width={24} height={24} />

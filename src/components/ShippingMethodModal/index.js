@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   FlatList,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {SortAbjad, SortLower, SortHigh, Close} from '../../constants/icons';
@@ -127,36 +128,38 @@ export default class ShippingMethodModal extends Component {
     };
 
     return (
-      <View
-        style={{
-          height: 50,
-          flex: 1,
-          alignItems: 'center',
-          paddingHorizontal: 22,
-          paddingVertical: 40,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          backgroundColor: COLORS.greyLight2,
-          borderRadius: BORDER_RADIUS.regular,
-          marginBottom: 10,
-        }}>
-        <Text
+      <ScrollView>
+        <View
           style={{
-            color: COLORS.black,
-            fontSize: SIZES.h2,
-            fontFamily: FONTS.medium,
+            height: 50,
+            flex: 1,
+            alignItems: 'center',
+            paddingHorizontal: 22,
+            paddingVertical: 35,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            backgroundColor: COLORS.greyLight2,
+            borderRadius: BORDER_RADIUS.regular,
+            marginBottom: 10,
           }}>
-          {item.name}
-        </Text>
-        <Text
-          style={{
-            color: COLORS.black,
-            fontSize: SIZES.h2,
-            fontFamily: FONTS.medium,
-          }}>
-          {convertToRupiah(item.price)}
-        </Text>
-      </View>
+          <Text
+            style={{
+              color: COLORS.black,
+              fontSize: SIZES.h2,
+              fontFamily: FONTS.medium,
+            }}>
+            {item.name}
+          </Text>
+          <Text
+            style={{
+              color: COLORS.black,
+              fontSize: SIZES.h2,
+              fontFamily: FONTS.medium,
+            }}>
+            {convertToRupiah(item.price)}
+          </Text>
+        </View>
+      </ScrollView>
     );
   };
 

@@ -4,13 +4,9 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {BORDER_RADIUS} from '../../constants/themes';
 
-const AddToCart = ({addItemToCart, value}) => {
-  const navigation = useNavigation();
-
+const AddToCart = ({addItemToCart, id}) => {
   return (
-    <TouchableOpacity
-      style={styles.addCart}
-      onPress={() => addItemToCart(value)}>
+    <TouchableOpacity style={styles.addCart} onPress={() => addItemToCart(id)}>
       <Text style={styles.label}>Add To Cart</Text>
     </TouchableOpacity>
   );

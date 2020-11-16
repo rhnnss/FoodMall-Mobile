@@ -10,9 +10,16 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
-import {SortAbjad, SortLower, SortHigh, Close} from '../../constants/icons';
+import {
+  SortAbjad,
+  SortLower,
+  SortHigh,
+  Close,
+  Check,
+} from '../../constants/icons';
 import {BORDER_RADIUS} from '../../constants/themes';
 import {Input} from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const deviceHeight = Dimensions.get('window').height;
 
@@ -28,6 +35,8 @@ export default class AdressDeliveryModal extends Component {
           price: 45000,
         },
       ],
+      name: null,
+      address: null,
     };
   }
 
@@ -39,6 +48,7 @@ export default class AdressDeliveryModal extends Component {
     this.setState({show: false});
   };
 
+  // ---------------------------------- Render Outside Touchable  ----------------------------------
   renderOutsideTouchable(onTouch) {
     const view = <View style={{flex: 1, width: '100%'}} />;
     if (!onTouch) return view;
@@ -52,6 +62,7 @@ export default class AdressDeliveryModal extends Component {
     );
   }
 
+  // ---------------------------------- Render Title  ----------------------------------
   renderTitle = () => {
     const {title, onTouchOutside} = this.props;
 
@@ -77,13 +88,18 @@ export default class AdressDeliveryModal extends Component {
           }}>
           {title}
         </Text>
+
+        {/* <TouchableOpacity style={{position: 'absolute', top: 30, right: 20}}>
+          <Check width={35} height={35} />
+        </TouchableOpacity> */}
       </View>
     );
   };
 
+  // ---------------------------------- Common Render  ----------------------------------
   render() {
     let {show} = this.state;
-    const {onTouchOutside} = this.props;
+    const {onTouchOutside, getName, getAddress} = this.props;
 
     return (
       <Modal
@@ -123,6 +139,8 @@ export default class AdressDeliveryModal extends Component {
                     fontFamily: FONTS.regular,
                     fontSize: SIZES.h2,
                   }}
+                  onChangeText={(value) => getName(value)}
+                  value={this.state.name}
                 />
               </View>
               <View>
@@ -131,6 +149,8 @@ export default class AdressDeliveryModal extends Component {
                   labelStyle={{fontFamily: FONTS.medium, fontSize: SIZES.h2}}
                   placeholder="Delivery adress"
                   inputStyle={{fontFamily: FONTS.regular, fontSize: SIZES.h2}}
+                  onChangeText={(value) => getAddress(value)}
+                  value={this.state.address}
                 />
               </View>
             </View>

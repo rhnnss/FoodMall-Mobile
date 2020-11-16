@@ -4,27 +4,22 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   Image,
   TouchableOpacity,
   Linking,
+  ScrollView,
 } from 'react-native';
-import {AddToCart, DetailCountButton} from '../components';
+import {AddToCart} from '../components';
 import {COLORS, FONTS, SIZES} from '../constants';
-import {
-  ArrowBack,
-  Share,
-  StarActive,
-  StarNonActive,
-  Plus,
-  Minus,
-} from '../constants/icons';
+import {ArrowBack, Share, StarActive, StarNonActive} from '../constants/icons';
 import {BORDER_RADIUS} from '../constants/themes';
+import {connect} from 'react-redux';
+import {addToCart} from '../redux/Shopping/Shopping-actions';
 
-const CardItemDetails = ({route, navigation}) => {
-  // const navigation = useNavigation();
+const CardItemDetails = ({route, navigation, addToCart}) => {
   const {
     value,
+    id,
     title,
     image,
     price,
@@ -33,6 +28,7 @@ const CardItemDetails = ({route, navigation}) => {
     coma,
     addItemToCart,
   } = route.params;
+
   const arrIcon = 40;
   const shareIcon = 30;
   const starIcon = 20;
@@ -104,53 +100,57 @@ const CardItemDetails = ({route, navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <View style={styles.button}>
-          <TouchableOpacity
-            style={styles.headerBtn}
-            onPress={() => navigation.goBack()}>
-            <ArrowBack width={arrIcon} height={arrIcon} />
-          </TouchableOpacity>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <View style={styles.button}>
+            <TouchableOpacity
+              style={styles.headerBtn}
+              onPress={() => navigation.goBack()}>
+              <ArrowBack width={arrIcon} height={arrIcon} />
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.headerBtn}
-            onPress={handleWhatsappPress}>
-            <Share width={shareIcon} height={shareIcon} />
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.headerBtn}
+              onPress={handleWhatsappPress}>
+              <Share width={shareIcon} height={shareIcon} />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.imageContainer}>
+            <Image
+              source={{uri: image}}
+              style={{
+                width: 286.03,
+                height: 200,
+              }}
+            />
+          </View>
         </View>
 
-        <View style={styles.imageContainer}>
-          <Image
-            source={{uri: image}}
-            style={{
-              width: 286.03,
-              height: 200,
-            }}
-          />
+        <View style={styles.bodyContainer}>
+          <Text style={styles.label}>{title}</Text>
+          <Text style={styles.price}>{coma(price)}</Text>
+          <View style={styles.starContainer}>
+            <Stars />
+            <Text style={styles.valueRating}>{star}.0</Text>
+          </View>
+          <Text style={styles.value}>{description}</Text>
+
+          <View style={styles.footer}>
+            <AddToCart addItemToCart={addToCart} id={id} />
+          </View>
         </View>
       </View>
-
-      <View style={styles.bodyContainer}>
-        <Text style={styles.label}>{title}</Text>
-        <Text style={styles.price}>{coma(price)}</Text>
-        <View style={styles.starContainer}>
-          <Stars />
-          <Text style={styles.valueRating}>{star}.0</Text>
-        </View>
-        <Text style={styles.value}>{description}</Text>
-
-        <View style={styles.footer}>
-          {/* <DetailCountButton type="Large" /> */}
-
-          <AddToCart addItemToCart={addItemToCart} value={value} />
-        </View>
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 
-export default CardItemDetails;
+const mapDispatchToProps = (dispatch) => ({
+  addToCart: (id) => dispatch(addToCart(id)),
+});
+
+export default connect(null, mapDispatchToProps)(CardItemDetails);
 
 const headerButtonSize = 52;
 
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
   label: {
     marginTop: 20,
     fontSize: SIZES.h1,
-    fontFamily: FONTS.regular,
+    fontFamily: FONTS.medium,
   },
   price: {
     fontSize: SIZES.h1,
@@ -225,6 +225,7 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
     marginTop: 70,
+    marginBottom: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
   },

@@ -9,15 +9,22 @@ import {
   ActivityIndicator,
   Dimensions,
 } from 'react-native';
-import {AddToCart, DetailCountButton, ShippingMethodModal} from '../components';
-import {ArrowBack, ArrowDown, CarShipping, Trash} from '../constants/icons';
+import {DetailCountButton, ShippingMethodModal} from '../components';
+import {
+  ArrowBack,
+  ArrowDown,
+  CarShipping,
+  Trash,
+  Minus,
+  Plus,
+} from '../constants/icons';
 import {COLORS} from '../constants';
 import {BORDER_RADIUS, FONTS, SIZES} from '../constants/themes';
-import {REMOVE_FROM_CART} from '../redux/CartItem';
 import {useNavigation} from '@react-navigation/native';
-import {useSelector, useDispatch} from 'react-redux';
+import {connect} from 'react-redux';
+import {addQty, removeFromCart} from '../redux/Shopping/Shopping-actions';
 
-const ShopCart = ({route}) => {
+const ShopCart = ({route, cart, removeFromCart, addQty}) => {
   const arrIcon = 40;
   const trashIcon = 25;
   const navigation = useNavigation();
@@ -31,9 +38,20 @@ const ShopCart = ({route}) => {
     popupRef.close();
   };
 
-  const cartItems = useSelector((state) => state);
+  const [totalPrice, setTotalPrice] = useState(0);
 
-  let modul = cartItems.map((value, index) => {
+  useEffect(() => {
+    let price = 0;
+
+    cart.forEach((item) => {
+      price += item.qty * item.harga;
+    });
+
+    setTotalPrice(price);
+  }, [cart, totalPrice, setTotalPrice]);
+
+  // --------------------------------------------- Render Products ---------------------------------------------
+  const renderProducts = cart.map((value) => {
     const convertToRupiah = (angka) => {
       var rupiah = '';
       var angkarev = angka.toString().split('').reverse().join('');
@@ -48,15 +66,8 @@ const ShopCart = ({route}) => {
       );
     };
 
-    const dispatch = useDispatch();
-    const removeItemFromCart = (value) =>
-      dispatch({
-        type: REMOVE_FROM_CART,
-        payload: value,
-      });
-
     return (
-      <View style={styles.cardContainer} key={index}>
+      <View style={styles.cardContainer} key={value.id}>
         <View style={styles.imageContainer}>
           <Image
             source={{uri: 'https://i.imgur.com/kRjQpZg.png'}}
@@ -70,13 +81,27 @@ const ShopCart = ({route}) => {
 
             <TouchableOpacity
               style={styles.miniDeleteButton}
-              onPress={() => removeItemFromCart(value)}>
+              onPress={() => removeFromCart(value.id)}>
               <Trash width={trashIcon} height={trashIcon} />
             </TouchableOpacity>
           </View>
 
           <View style={styles.detailFooter}>
-            <DetailCountButton type="Mini" />
+            {/* ------------------------------------ Handle Decrement ------------------------------------ */}
+            <View style={styles.countContainer}>
+              <TouchableOpacity style={styles.minus}>
+                <Minus />
+              </TouchableOpacity>
+
+              <Text style={styles.countValue}>{value.qty}</Text>
+              {/* ------------------------------------ Handle Increment ------------------------------------ */}
+              <TouchableOpacity
+                style={styles.plus}
+                onPress={() => addQty(value.id, value.qty)}>
+                <Plus />
+              </TouchableOpacity>
+            </View>
+
             <Text style={styles.valuePrice}>
               {convertToRupiah(value.harga)}
             </Text>
@@ -86,7 +111,22 @@ const ShopCart = ({route}) => {
     );
   });
 
-  if (cartItems.length > 0) {
+  // ----------------------------------------- Common Render -----------------------------------------
+  if (cart.length > 0) {
+    const convertToRupiah = (angka) => {
+      var rupiah = '';
+      var angkarev = angka.toString().split('').reverse().join('');
+      for (var i = 0; i < angkarev.length; i++)
+        if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
+      return (
+        'Rp. ' +
+        rupiah
+          .split('', rupiah.length - 1)
+          .reverse()
+          .join('')
+      );
+    };
+
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -96,12 +136,15 @@ const ShopCart = ({route}) => {
             <ArrowBack width={arrIcon} height={arrIcon} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.deleteBtn}>
+          {/* <TouchableOpacity style={styles.deleteBtn}>
             <Text style={styles.labelDelete}>Hapus Semua</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
-        <ScrollView style={styles.productContainer}>{modul}</ScrollView>
+        {/*----------------- Product -----------------*/}
+        <ScrollView style={styles.productContainer}>
+          {renderProducts}
+        </ScrollView>
 
         {/*----------------- Modal -----------------*/}
         <ShippingMethodModal
@@ -125,7 +168,9 @@ const ShopCart = ({route}) => {
           <View style={styles.footerBottom}>
             <View style={styles.footerPriceContainer}>
               <Text style={styles.labelFooterPrice}>Total Harga</Text>
-              <Text style={styles.valueFooterPrice}>Rp. 150.000</Text>
+              <Text style={styles.valueFooterPrice}>
+                {convertToRupiah(totalPrice)}
+              </Text>
             </View>
 
             <TouchableOpacity
@@ -148,12 +193,65 @@ const ShopCart = ({route}) => {
   }
 };
 
-export default ShopCart;
+const mapStateToProps = (state) => ({
+  cart: state.shop.cart,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  addQty: (id, value) => dispatch(addQty(id, value)),
+  removeFromCart: (id) => dispatch(removeFromCart(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShopCart);
 
 const deviceWidht = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+  countContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: 136,
+    marginLeft: -18,
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    padding: 5,
+    borderRadius: BORDER_RADIUS.small,
+    transform: [{scale: 0.8}],
+  },
+  minus: {
+    paddingHorizontal: 6.49,
+    paddingVertical: 6.49,
+    backgroundColor: COLORS.white,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
+    borderRadius: BORDER_RADIUS.default,
+  },
+  plus: {
+    paddingHorizontal: 6.49,
+    paddingVertical: 6.49,
+    backgroundColor: COLORS.white,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4,
+    borderRadius: BORDER_RADIUS.default,
+  },
+  countValue: {
+    fontFamily: FONTS.medium,
+    fontSize: 18,
+    textAlign: 'center',
+  },
   container: {
     backgroundColor: COLORS.white,
     width: '100%',

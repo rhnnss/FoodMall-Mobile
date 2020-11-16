@@ -122,7 +122,7 @@ const FinishPayment = () => {
 
   //--------------------------- Render Container ---------------------------
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View>
         <Text style={styles.title}>Your Payment Deadline</Text>
         <View style={styles.dateTimeContainer}>
@@ -181,7 +181,7 @@ const FinishPayment = () => {
         onPress={() => navigation.navigate('Home')}>
         <Text style={styles.valueBacktoHome}>Shopping Again</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   buttonBackToHome: {
-    paddingVertical: 12,
+    paddingVertical: 16,
     backgroundColor: COLORS.primary,
     justifyContent: 'center',
     alignItems: 'center',
@@ -234,6 +234,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2.62,
 
     elevation: 4,
+    marginBottom: 20,
   },
   valueBacktoHome: {
     fontFamily: FONTS.medium,

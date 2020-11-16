@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../../constants';
 import {
@@ -9,15 +9,24 @@ import {
   UserActive,
   UserNonActive,
 } from '../../../constants/icons';
-// import {connect} from 'react-redux';
-import {useSelector} from 'react-redux';
+import {connect} from 'react-redux';
 
-const TabItems = ({isFocused, onPress, onLongPress, label}) => {
+const TabItems = ({isFocused, onPress, onLongPress, label, cart}) => {
   const widthIcon = 24;
   const heightIcon = 24;
-  const cartItems = useSelector((state) => state);
 
-  const count = cartItems.length;
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    let count = 0;
+    cart.forEach((item) => {
+      count += item.qty;
+    });
+
+    setCartCount(count);
+  }, [cart, cartCount]);
+
+  const count = cartCount;
 
   function Icon() {
     if (label === 'Home')
@@ -50,6 +59,7 @@ const TabItems = ({isFocused, onPress, onLongPress, label}) => {
     );
   };
 
+  // ------------------------------------------- Badge -------------------------------------------
   const Badge = () => {
     if (label === 'Shop' && count <= 100) {
       return <Item />;
@@ -72,7 +82,11 @@ const TabItems = ({isFocused, onPress, onLongPress, label}) => {
   );
 };
 
-export default TabItems;
+const mapStateToProps = (state) => ({
+  cart: state.shop.cart,
+});
+
+export default connect(mapStateToProps)(TabItems);
 
 const circleSize = 22;
 

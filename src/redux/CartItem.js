@@ -1,8 +1,5 @@
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
-export const PLUS_HANDLE = 'PLUS_HANDLE';
-export const MINUS_HANDLE = 'MINUS_HANDLE';
-export const TOTAL_COUNTER = 'TOTAL_COUNTER';
 
 const initialState = [];
 

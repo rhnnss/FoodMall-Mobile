@@ -43,3 +43,16 @@ app.get('/newProducts', (req, res) => {
     }
   });
 });
+
+app.post('/deliveryAddress', (req, res) => {
+  const name = req.body.name;
+  const delivery = req.body.delivery;
+
+  con.query(
+    'INSERT INTO deliveryaddress (nama, alamat) VALUES (?,?) ',
+    [name, delivery],
+    (err, rows, fields) => {
+      res.send(JSON.stringify(rows));
+    },
+  );
+});

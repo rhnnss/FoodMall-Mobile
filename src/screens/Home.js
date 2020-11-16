@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Image,
   ScrollView,
@@ -11,8 +11,10 @@ import {Search, Category, SortModal, Products} from '../components';
 import {images, FONTS, SIZES, COLORS} from '../constants';
 import {ArrowDown} from '../constants/icons';
 import LinearGradient from 'react-native-linear-gradient';
+import {connect} from 'react-redux';
+import {fecthProducts} from '../redux/Shopping/Shopping-actions';
 
-const Home = () => {
+const Home = ({dispatch, products, loading, hasErrors}) => {
   let popupRef = React.createRef();
 
   const onShowPopup = () => {
@@ -23,9 +25,30 @@ const Home = () => {
     popupRef.close();
   };
 
+  useEffect(() => {
+    dispatch(fecthProducts());
+  }, [dispatch]);
+
+  console.log(products);
+
+  // Render Products
+  const renderProducts = () => {
+    if (loading) {
+      return <Text>Loading Man...</Text>;
+    }
+    if (hasErrors) {
+      return <Text>No Products to Display</Text>;
+    }
+
+    return products.map((product) => (
+      <Products key={product.id} data={product} />
+    ));
+  };
+
   return (
     <ScrollView style={styles.page}>
       <View style={styles.container}>
+        {/*------------------------------- Header Container ------------------------------------- */}
         <View style={styles.headerContainer}>
           <View style={styles.HeaderText}>
             <Text style={styles.LabelHeader}>Hey, Albert Flores</Text>
@@ -38,14 +61,19 @@ const Home = () => {
             colors={['rgba(255, 253, 210, 0)', COLORS.primary]}
             style={styles.linearGradient}></LinearGradient>
 
-          <TouchableOpacity style={styles.avatar}>
+          <TouchableOpacity style={styles.avatar} onPress={() => test()}>
             <Image source={images.avatar}></Image>
             <View style={styles.miniCircle} />
           </TouchableOpacity>
         </View>
 
-        <Search />
+        {/*------------------------------- Search ------------------------------------- */}
 
+        <View style={styles.Search}>
+          <Search />
+        </View>
+
+        {/*------------------------------- Category ------------------------------------- */}
         <View style={styles.Category}>
           <Text style={styles.LabelHeader2}>Category</Text>
           <View style={styles.categoryList}>
@@ -58,6 +86,7 @@ const Home = () => {
           </View>
         </View>
 
+        {/*------------------------------- Our Product ------------------------------------- */}
         <View style={styles.ourProduct}>
           <Text style={styles.LabelHeader2}>Our Product</Text>
           <TouchableOpacity
@@ -68,10 +97,10 @@ const Home = () => {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.RandomProduct}>
-          <Products />
-        </View>
+        {/*------------------------------- RandomProduct ------------------------------------- */}
+        <View style={styles.RandomProduct}>{renderProducts()}</View>
 
+        {/*------------------------------- Sort Modal ------------------------------------- */}
         <SortModal
           ref={(target) => (popupRef = target)}
           onTouchOutside={onClosePopup}
@@ -82,22 +111,26 @@ const Home = () => {
   );
 };
 
-export default Home;
+const mapStateToProps = (state) => ({
+  products: state.shop.products,
+  loading: state.shop.loading,
+  hasErrors: state.shop.hasErrors,
+});
+
+export default connect(mapStateToProps)(Home);
 
 const styles = StyleSheet.create({
   page: {
     backgroundColor: COLORS.white,
   },
   container: {
-    marginHorizontal: 22,
-    // paddingHorizontal: 22,
-    // marginVertical: 36,
     paddingVertical: 36,
   },
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 22,
   },
   LabelHeader: {
     fontFamily: FONTS.medium,
@@ -121,11 +154,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 10,
+    paddingHorizontal: 22,
   },
   Category: {
     justifyContent: 'space-between',
     marginTop: 40,
     marginBottom: 20,
+    paddingHorizontal: 22,
   },
   categoryList: {
     flexDirection: 'row',
@@ -151,5 +186,14 @@ const styles = StyleSheet.create({
     top: -100,
     left: 210,
     transform: [{rotate: '-65deg'}],
+  },
+  RandomProduct: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 12,
+    flexWrap: 'wrap',
+  },
+  Search: {
+    paddingHorizontal: 22,
   },
 });
