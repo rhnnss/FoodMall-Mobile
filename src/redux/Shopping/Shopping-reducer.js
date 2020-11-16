@@ -36,21 +36,23 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         ...state,
         cart: state.cart.filter((item) => item.id !== action.payload.id),
       };
-    case actionTypes.ADJUST_QTY:
+    case actionTypes.ADD_QTY:
       return {
         ...state,
         cart: state.cart.map((item) =>
           item.id === action.payload.id
-            ? {...item, qty: action.payload.qty}
+            ? {...item, qty: action.payload.qty + 1}
             : item,
         ),
       };
-    case actionTypes.ADD_QTY:
+    case actionTypes.SUB_QTY:
       return {
         ...state,
-        cart: state.cart.find((item) =>
+        cart: state.cart.map((item) =>
           item.id === action.payload.id
-            ? [{...item, qty: action.payload.qty + 1}]
+            ? action.payload.qty <= 1
+              ? {...item, qty: 1}
+              : {...item, qty: action.payload.qty - 1}
             : item,
         ),
       };

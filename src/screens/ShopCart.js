@@ -22,9 +22,19 @@ import {COLORS} from '../constants';
 import {BORDER_RADIUS, FONTS, SIZES} from '../constants/themes';
 import {useNavigation} from '@react-navigation/native';
 import {connect} from 'react-redux';
-import {addQty, removeFromCart} from '../redux/Shopping/Shopping-actions';
+import {
+  addQty,
+  removeFromCart,
+  subQty,
+} from '../redux/Shopping/Shopping-actions';
 
-const ShopCart = ({route, cart, removeFromCart, addQty}) => {
+const ShopCart = ({
+  route,
+  cart,
+  removeFromCart,
+  handleAddQty,
+  handleSubQty,
+}) => {
   const arrIcon = 40;
   const trashIcon = 25;
   const navigation = useNavigation();
@@ -89,7 +99,9 @@ const ShopCart = ({route, cart, removeFromCart, addQty}) => {
           <View style={styles.detailFooter}>
             {/* ------------------------------------ Handle Decrement ------------------------------------ */}
             <View style={styles.countContainer}>
-              <TouchableOpacity style={styles.minus}>
+              <TouchableOpacity
+                style={styles.minus}
+                onPress={() => handleSubQty(value.id, value.qty)}>
                 <Minus />
               </TouchableOpacity>
 
@@ -97,7 +109,7 @@ const ShopCart = ({route, cart, removeFromCart, addQty}) => {
               {/* ------------------------------------ Handle Increment ------------------------------------ */}
               <TouchableOpacity
                 style={styles.plus}
-                onPress={() => addQty(value.id, value.qty)}>
+                onPress={() => handleAddQty(value.id, value.qty)}>
                 <Plus />
               </TouchableOpacity>
             </View>
@@ -150,7 +162,7 @@ const ShopCart = ({route, cart, removeFromCart, addQty}) => {
         <ShippingMethodModal
           ref={(target) => (popupRef = target)}
           onTouchOutside={onClosePopup}
-          title="Pilih Pengiriman"
+          title="Choose the type of delivery"
         />
 
         <View style={styles.footer}>
@@ -160,14 +172,14 @@ const ShopCart = ({route, cart, removeFromCart, addQty}) => {
               style={styles.triggerModalContainer}
               onPress={onShowPopup}>
               <CarShipping width={24} height={24} />
-              <Text style={styles.labelModal}>Pilih Pengiriman</Text>
+              <Text style={styles.labelModal}>Type of Delivery</Text>
               <ArrowDown width={24} height={24} />
             </TouchableOpacity>
           </View>
 
           <View style={styles.footerBottom}>
             <View style={styles.footerPriceContainer}>
-              <Text style={styles.labelFooterPrice}>Total Harga</Text>
+              <Text style={styles.labelFooterPrice}>Total Price</Text>
               <Text style={styles.valueFooterPrice}>
                 {convertToRupiah(totalPrice)}
               </Text>
@@ -176,7 +188,7 @@ const ShopCart = ({route, cart, removeFromCart, addQty}) => {
             <TouchableOpacity
               style={styles.pembayaranBtn}
               onPress={() => navigation.navigate('PaymentMethod')}>
-              <Text style={styles.labelPembayaran}>Pembayaran</Text>
+              <Text style={styles.labelPembayaran}>Payment</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -198,7 +210,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  addQty: (id, value) => dispatch(addQty(id, value)),
+  handleAddQty: (id, value) => dispatch(addQty(id, value)),
+  handleSubQty: (id, value) => dispatch(subQty(id, value)),
   removeFromCart: (id) => dispatch(removeFromCart(id)),
 });
 

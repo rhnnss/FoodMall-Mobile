@@ -76,7 +76,7 @@ const PaymentMethod = () => {
       {/*----------------- Ovo Payment -----------------*/}
       <View>
         <View style={styles.OvoPaymentHeader}>
-          <Text style={styles.title}>Gunakan OVO</Text>
+          <Text style={styles.title}>Using OVO Payment</Text>
           <OvoPayment style={styles.OvoPaymentIcon} width={24} height={24} />
         </View>
 
@@ -99,7 +99,7 @@ const PaymentMethod = () => {
 
       {/*----------------- Payment Method -----------------*/}
       <View>
-        <Text style={styles.title}>Metode Pembayaran</Text>
+        <Text style={styles.title}>Payment Method</Text>
         <ScrollView style={{height: deviceHeight * 0.35}}>
           <PaymentVia via="Bank" status={true} />
           <PaymentVia via="Ceriamart" status={false} />
@@ -111,14 +111,14 @@ const PaymentMethod = () => {
       <View style={styles.footer}>
         <View style={styles.footerBottom}>
           <View style={styles.footerPriceContainer}>
-            <Text style={styles.labelFooterPrice}>Total Harga</Text>
+            <Text style={styles.labelFooterPrice}>Total Price</Text>
             <Text style={styles.valueFooterPrice}>Rp 250.000</Text>
           </View>
 
           <TouchableOpacity
             style={styles.pembayaranBtn}
             onPress={() => navigation.navigate('FinishPayment')}>
-            <Text style={styles.labelPembayaran}>Pembayaran</Text>
+            <Text style={styles.labelPembayaran}>Payment</Text>
           </TouchableOpacity>
         </View>
       </View>

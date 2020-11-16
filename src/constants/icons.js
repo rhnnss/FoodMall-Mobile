@@ -44,6 +44,8 @@ import Visa from '../assets/icons/VISA';
 
 import LogoSplash from '../assets/icons/LogoSplash';
 
+import Avatar from '../assets/icons/Avatar';
+
 export {
   ArrowBack,
   ArrowDown,
@@ -84,4 +86,5 @@ export {
   Visa,
   LogoSplash,
   Check,
+  Avatar,
 };

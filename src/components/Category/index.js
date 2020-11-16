@@ -12,12 +12,12 @@ import {
 
 const Category = ({title}) => {
   const Icons = () => {
-    if (title === 'Sarapan Pagi') return <SarapanPagi />;
-    if (title === 'Daging Sapi') return <DagingSapi />;
-    if (title === 'Ayam') return <Ayam />;
-    if (title === 'Ikan') return <Ikan />;
-    if (title === 'Minuman') return <Minuman />;
-    if (title === 'Camilan') return <Camilan />;
+    if (title === 'Breakfast') return <SarapanPagi />;
+    if (title === 'Beef') return <DagingSapi />;
+    if (title === 'Chicken Meat') return <Ayam />;
+    if (title === 'Fish Meat') return <Ikan />;
+    if (title === 'Fresh Drink') return <Minuman />;
+    if (title === 'Snack') return <Camilan />;
   };
 
   return (

@@ -77,12 +77,12 @@ const Home = ({dispatch, products, loading, hasErrors}) => {
         <View style={styles.Category}>
           <Text style={styles.LabelHeader2}>Category</Text>
           <View style={styles.categoryList}>
-            <Category title="Sarapan Pagi" />
-            <Category title="Daging Sapi" />
-            <Category title="Ayam" />
-            <Category title="Ikan" />
-            <Category title="Minuman" />
-            <Category title="Camilan" />
+            <Category title="Breakfast" />
+            <Category title="Beef" />
+            <Category title="Chicken Meat" />
+            <Category title="Fish Meat" />
+            <Category title="Fresh Drink" />
+            <Category title="Snack" />
           </View>
         </View>
 
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
   RandomProduct: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 12,
+    paddingHorizontal: 22,
     flexWrap: 'wrap',
   },
   Search: {

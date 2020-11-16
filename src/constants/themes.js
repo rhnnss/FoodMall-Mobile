@@ -28,6 +28,7 @@ export const FONTS = {
 };
 export const SIZES = {
   default: 12,
+  h11: 30,
   h1: 20,
   h2: 17,
   h3: 14,
