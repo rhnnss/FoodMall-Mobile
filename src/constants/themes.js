@@ -1,6 +1,6 @@
 export const COLORS = {
   primary: '#FFC700',
-  secondary: '#FFF1BF',
+  secondary: '#FFEFC5',
   third: '#FF0000',
 
   // Icon

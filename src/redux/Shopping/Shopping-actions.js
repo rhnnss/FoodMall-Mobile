@@ -67,11 +67,12 @@ export const getProductsFailed = () => {
   };
 };
 
+// ------------------------------- Fetching Products -------------------------------------------
 export function fecthProducts(dispatch) {
   return async (dispatch) => {
     dispatch(getProducts());
     try {
-      const res = await fetch('http://192.168.100.12:4090/newProducts ');
+      const res = await fetch('http://192.168.100.12:4090/newProducts');
       const data = await res.json();
       dispatch(getProductsSuccess(data));
     } catch (e) {
@@ -79,3 +80,76 @@ export function fecthProducts(dispatch) {
     }
   };
 }
+
+// export function getCategoryBreakfast(dispatch) {
+//   return async (dispatch) => {
+//     dispatch(getProducts());
+//     try {
+//       const res = await fetch('http://192.168.100.12:4090/categoryBreakfast ');
+//       const data = await res.json();
+//       dispatch(getProductsSuccess(data));
+//     } catch (e) {
+//       dispatch(getProductsFailed());
+//     }
+//   };
+// }
+// export function getCategoryBeef(dispatch) {
+//   return async (dispatch) => {
+//     dispatch(getProducts());
+//     try {
+//       const res = await fetch('http://192.168.100.12:4090/categoryBeef');
+//       const data = await res.json();
+//       dispatch(getProductsSuccess(data));
+//     } catch (e) {
+//       dispatch(getProductsFailed());
+//     }
+//   };
+// }
+// export function getCategoryChicken(dispatch) {
+//   return async (dispatch) => {
+//     dispatch(getProducts());
+//     try {
+//       const res = await fetch('http://192.168.100.12:4090/categoryChicken ');
+//       const data = await res.json();
+//       dispatch(getProductsSuccess(data));
+//     } catch (e) {
+//       dispatch(getProductsFailed());
+//     }
+//   };
+// }
+// export function getCategoryFish(dispatch) {
+//   return async (dispatch) => {
+//     dispatch(getProducts());
+//     try {
+//       const res = await fetch('http://192.168.100.12:4090/categoryFish');
+//       const data = await res.json();
+//       dispatch(getProductsSuccess(data));
+//     } catch (e) {
+//       dispatch(getProductsFailed());
+//     }
+//   };
+// }
+// export function getCategoryIceCream(dispatch) {
+//   return async (dispatch) => {
+//     dispatch(getProducts());
+//     try {
+//       const res = await fetch('http://192.168.100.12:4090/categoryIceCream');
+//       const data = await res.json();
+//       dispatch(getProductsSuccess(data));
+//     } catch (e) {
+//       dispatch(getProductsFailed());
+//     }
+//   };
+// }
+// export function getCategorySnacks(dispatch) {
+//   return async (dispatch) => {
+//     dispatch(getProducts());
+//     try {
+//       const res = await fetch('http://192.168.100.12:4090/categorySnacks');
+//       const data = await res.json();
+//       dispatch(getProductsSuccess(data));
+//     } catch (e) {
+//       dispatch(getProductsFailed());
+//     }
+//   };
+// }

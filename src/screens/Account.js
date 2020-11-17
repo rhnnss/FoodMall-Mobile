@@ -12,7 +12,7 @@ import {BORDER_RADIUS} from '../constants/themes';
 
 const Account = () => {
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor: COLORS.white}}>
       <View style={styles.container}>
         {/* ---------------------------- Header ---------------------------- */}
         <View style={styles.header}>

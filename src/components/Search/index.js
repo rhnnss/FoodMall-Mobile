@@ -13,7 +13,7 @@ const Search = () => {
   return (
     <View style={styles.container}>
       <SearchIcon width={20} height={20} style={styles.search} />
-      <TextInput style={styles.input} placeholder="Burger Big Macs" />
+      <TextInput style={styles.input} placeholder="Searchh" />
     </View>
   );
 };

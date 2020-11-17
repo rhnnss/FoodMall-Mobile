@@ -40,9 +40,11 @@ const Home = ({dispatch, products, loading, hasErrors}) => {
       return <Text>No Products to Display</Text>;
     }
 
-    return products.map((product) => (
-      <Products key={product.id} data={product} />
-    ));
+    return products.map((product) => {
+      if (product.role === 'Home') {
+        return <Products key={product.id} data={product} />;
+      }
+    });
   };
 
   return (
@@ -81,7 +83,7 @@ const Home = ({dispatch, products, loading, hasErrors}) => {
             <Category title="Beef" />
             <Category title="Chicken Meat" />
             <Category title="Fish Meat" />
-            <Category title="Fresh Drink" />
+            <Category title="Ice Cream" />
             <Category title="Snack" />
           </View>
         </View>
@@ -190,7 +192,7 @@ const styles = StyleSheet.create({
   RandomProduct: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 22,
+    paddingHorizontal: 12,
     flexWrap: 'wrap',
   },
   Search: {

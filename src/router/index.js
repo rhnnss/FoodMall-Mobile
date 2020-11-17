@@ -7,6 +7,12 @@ import CardItemDetails from '../screens/CardItemDetails';
 import PaymentMethod from '../screens/PaymentMethod';
 import FinishPayment from '../screens/FinishPayment';
 import Splash from '../screens/Splash';
+import CategoryBreakfast from '../screens/MenuCategory/CategoryBreakfast';
+import CategoryBeef from '../screens/MenuCategory/CategoryBeef';
+import CategoryChicken from '../screens/MenuCategory/CategoryChicken';
+import CategoryFish from '../screens/MenuCategory/CategoryFish';
+import CategoryIceCream from '../screens/MenuCategory/CategoryIceCream';
+import CategorySnacks from '../screens/MenuCategory/CategorySnacks';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -49,6 +55,36 @@ const Router = () => {
       <Stack.Screen
         name="FinishPayment"
         component={FinishPayment}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="CategoryBreakfast"
+        component={CategoryBreakfast}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="CategoryBeef"
+        component={CategoryBeef}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="CategoryChicken"
+        component={CategoryChicken}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="CategoryFish"
+        component={CategoryFish}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="CategoryIceCream"
+        component={CategoryIceCream}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="CategorySnacks"
+        component={CategorySnacks}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

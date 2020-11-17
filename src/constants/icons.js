@@ -20,6 +20,7 @@ import Trash from '../assets/icons/Trash';
 import Pencil from '../assets/icons/Pencil';
 import Close from '../assets/icons/Close';
 import Check from '../assets/icons/Check';
+import IceCream from '../assets/icons/IceCream';
 
 import CategoryBurger from '../assets/icons/CategoryBurger';
 import CategoryNasduk from '../assets/icons/CategoryNasduk';
@@ -87,4 +88,5 @@ export {
   LogoSplash,
   Check,
   Avatar,
+  IceCream,
 };
