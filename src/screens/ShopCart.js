@@ -79,10 +79,7 @@ const ShopCart = ({
     return (
       <View style={styles.cardContainer} key={value.id}>
         <View style={styles.imageContainer}>
-          <Image
-            source={{uri: 'https://i.imgur.com/kRjQpZg.png'}}
-            style={styles.image}
-          />
+          <Image source={{uri: value.icon}} style={styles.image} />
         </View>
 
         <View style={styles.detailContainer}>

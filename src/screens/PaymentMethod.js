@@ -14,10 +14,9 @@ import {BORDER_RADIUS} from '../constants/themes';
 import ToggleSwitch from 'toggle-switch-react-native';
 import {AdressDeliveryModal, PaymentVia} from '../components';
 import {useNavigation} from '@react-navigation/native';
-import Axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {connect} from 'react-redux';
 
-const PaymentMethod = () => {
+const PaymentMethod = ({cart}) => {
   const navigation = useNavigation();
   const deviceHeight = Dimensions.get('window').height;
   const [isEnable, setIsEnable] = useState(false);
@@ -29,6 +28,34 @@ const PaymentMethod = () => {
     '6391 Elgin St. Celina, Delaware 10299',
   );
 
+  // ------------------------------------ Calculate Total Price ------------------------------------
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    let price = 0;
+
+    cart.forEach((item) => {
+      price += item.qty * item.harga;
+    });
+
+    setTotalPrice(price);
+  }, [cart, totalPrice, setTotalPrice]);
+
+  const convertToRupiah = (angka) => {
+    var rupiah = '';
+    var angkarev = angka.toString().split('').reverse().join('');
+    for (var i = 0; i < angkarev.length; i++)
+      if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
+    return (
+      'Rp. ' +
+      rupiah
+        .split('', rupiah.length - 1)
+        .reverse()
+        .join('')
+    );
+  };
+
+  // ------------------------------------ Modal Ref ------------------------------------
   let popupRef = React.createRef();
   const onShowPopup = () => {
     popupRef.show();
@@ -112,7 +139,9 @@ const PaymentMethod = () => {
         <View style={styles.footerBottom}>
           <View style={styles.footerPriceContainer}>
             <Text style={styles.labelFooterPrice}>Total Price</Text>
-            <Text style={styles.valueFooterPrice}>Rp 250.000</Text>
+            <Text style={styles.valueFooterPrice}>
+              {convertToRupiah(totalPrice)}
+            </Text>
           </View>
 
           <TouchableOpacity
@@ -126,7 +155,11 @@ const PaymentMethod = () => {
   );
 };
 
-export default PaymentMethod;
+const mapStateToProps = (state) => ({
+  cart: state.shop.cart,
+});
+
+export default connect(mapStateToProps)(PaymentMethod);
 
 const styles = StyleSheet.create({
   container: {

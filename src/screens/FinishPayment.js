@@ -11,35 +11,73 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {CardPayment} from '../components';
 import {COLORS, FONTS, SIZES} from '../constants';
 import CountDown from 'react-native-countdown-component';
-import {Burger} from '../constants/images';
 import {BORDER_RADIUS} from '../constants/themes';
 import {useNavigation} from '@react-navigation/native';
+import {connect} from 'react-redux';
+import Axios from 'axios';
 
-const FinishPayment = () => {
+const FinishPayment = ({cart}) => {
   const deviceWidth = Dimensions.get('window').width;
   const deviceHeight = Dimensions.get('window').height;
 
   const navigation = useNavigation();
 
-  let initialState = [
-    {
-      id: 1,
-      title: 'Beef Burger Deluxe',
-      price: 150000,
-    },
-    {
-      id: 2,
-      title: 'Egg and Cheese Muffin',
-      price: 56000,
-    },
-    {
-      id: 3,
-      title: 'Sausage McMuffin with Egg',
-      price: 26000,
-    },
-  ];
+  const [DataSource, setDataSource] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
 
-  const [DataSource, setDataSource] = useState(initialState);
+  useEffect(() => {
+    let price = 0;
+
+    cart.forEach((item) => {
+      price += item.qty * item.harga + 2500;
+    });
+
+    setTotalPrice(price);
+  }, [cart, totalPrice, setTotalPrice]);
+
+  let today = new Date();
+
+  var weekday = new Array(7);
+  weekday[0] = 'Sunday';
+  weekday[1] = 'Monday';
+  weekday[2] = 'Tuesday';
+  weekday[3] = 'Wednesday';
+  weekday[4] = 'Thursday';
+  weekday[5] = 'Friday';
+  weekday[6] = 'Saturday';
+
+  var month = new Array();
+  month[0] = 'January';
+  month[1] = 'February';
+  month[2] = 'March';
+  month[3] = 'April';
+  month[4] = 'May';
+  month[5] = 'June';
+  month[6] = 'July';
+  month[7] = 'August';
+  month[8] = 'September';
+  month[9] = 'October';
+  month[10] = 'November';
+  month[11] = 'December';
+  let date =
+    weekday[today.getDay()] +
+    ', ' +
+    today.getDate() +
+    ' ' +
+    month[today.getMonth()] +
+    ' ' +
+    today.getFullYear();
+
+  function addZero(i) {
+    if (i < 10) {
+      i = '0' + i;
+    }
+    return i;
+  }
+  let time = today.getHours() + ':' + addZero(today.getMinutes());
+
+  let nowDate = date;
+  let nowTime = time;
 
   const convertToRupiah = (angka) => {
     var rupiah = '';
@@ -55,7 +93,7 @@ const FinishPayment = () => {
     );
   };
 
-  const Item = DataSource.map((val, index) => {
+  const Item = cart.map((val, index) => {
     return (
       <View
         style={{
@@ -65,10 +103,10 @@ const FinishPayment = () => {
         }}
         key={index}>
         <Text style={{fontFamily: FONTS.medium, fontSize: SIZES.body1}}>
-          {val.title}
+          {val.nama}
         </Text>
         <Text style={{fontFamily: FONTS.regular, fontSize: SIZES.body1}}>
-          {convertToRupiah(val.price)}
+          {convertToRupiah(val.harga)}
         </Text>
       </View>
     );
@@ -80,10 +118,10 @@ const FinishPayment = () => {
   }, 2500);
 
   const Total = () => {
-    let sum = DataSource.reduce((acc, crv) => {
-      let all = acc + crv.price;
-      return all;
-    }, 2500);
+    // let sum = DataSource.reduce((acc, crv) => {
+    //   let all = acc + crv.price;
+    //   return all;
+    // }, 2500);
 
     return (
       <View
@@ -114,7 +152,7 @@ const FinishPayment = () => {
             fontSize: SIZES.body1,
             alignSelf: 'flex-end',
           }}>
-          {convertToRupiah(sum)}
+          {convertToRupiah(totalPrice)}
         </Text>
       </View>
     );
@@ -126,8 +164,8 @@ const FinishPayment = () => {
       <View>
         <Text style={styles.title}>Your Payment Deadline</Text>
         <View style={styles.dateTimeContainer}>
-          <Text style={styles.date}>Sunday, 27 Sep 2020</Text>
-          <Text style={styles.dateTime}>10: 26 WIB</Text>
+          <Text style={styles.date}>{nowDate}</Text>
+          <Text style={styles.dateTime}>{nowTime}</Text>
         </View>
         {/* <Text style={styles.timer}>Hai</Text> */}
         <CountDown
@@ -154,7 +192,9 @@ const FinishPayment = () => {
           }}
         />
         <Text style={styles.labelTotal}>Total Payment</Text>
-        <Text style={styles.valuePembayaran}>{convertToRupiah(sum)}</Text>
+        <Text style={styles.valuePembayaran}>
+          {convertToRupiah(totalPrice - 2500)}
+        </Text>
       </View>
 
       <View>
@@ -185,7 +225,11 @@ const FinishPayment = () => {
   );
 };
 
-export default FinishPayment;
+const mapStateToProps = (state) => ({
+  cart: state.shop.cart,
+});
+
+export default connect(mapStateToProps)(FinishPayment);
 
 const styles = StyleSheet.create({
   container: {
@@ -204,7 +248,7 @@ const styles = StyleSheet.create({
     fontSize: SIZES.body1,
   },
   dateTime: {
-    fontFamily: FONTS.medium,
+    fontFamily: FONTS.bold,
     fontSize: SIZES.body1,
     marginLeft: 10,
   },

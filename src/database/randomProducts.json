@@ -1,44 +1,58 @@
 [
-    {
-        "image": "https://i.imgur.com/ztqPzmF.png",
-        "name": "Triple Burger with Cheese",
-        "price": 55500,
-        "star": 3
-    },
-    {
-        "image": "https://i.imgur.com/ztqPzmF.png",
-        "name": "Beef Burger Deluxe",
-        "price": 150000,
-        "star": 5
-    },
-    {
-        "image": "https://i.imgur.com/ztqPzmF.png",
-        "name": "Egg and Cheese Muffin",
-        "price": 56000,
-        "star": 1
-    },
-    {
-        "image": "https://i.imgur.com/ztqPzmF.png",
-        "name": "Sausage McMuffin with Egg",
-        "price": 26000,
-        "star": 2
-    },
-    {
-        "image": "https://i.imgur.com/ztqPzmF.png",
-        "name": "Hotcakes 3 pcs",
-        "price": 35800,
-        "star": 5
-    },
-    {
-        "image": "https://i.imgur.com/ztqPzmF.png",
-        "name": "Hashbrown",
-        "price": 39999,
-        "star": 3
-    },
-    {
-        "image": "https://i.imgur.com/ztqPzmF.png",
-        "name": "Nasi Uduk McD Ayam Suwir",
-        "price": 25000,
-        "star": 4
-    }
+    [
+        {
+        id: 1,
+        background: "https://i.imgur.com/d9kvguM.png",
+        icon: "https://nos.jkt-1.neo.id/mcdonalds/foods/September2020/bxesaLJbzXctklqQZ5RV.png",
+        nama: "Cheese Lover McFlavor Fries",
+        harga: "28100",
+        deskripsi: "Kentang goreng istimewa yang disajikan dengan saus keju, yang terdiri dari 4 jenis keju yaitu Cheddar, Ementa, Camembert, Romano serta ditaburi paruta",
+        star: "5"
+        },
+        {
+        id: 2,
+        background: "https://i.imgur.com/d9kvguM.png",
+        icon: "https://nos.jkt-1.neo.id/mcdonalds/foods/August2020/BE5pfP6dozxpicQxBedA.png",
+        nama: "Kentang Goreng Gulai Gurih",
+        harga: "5200",
+        deskripsi: "French Fries McD ukuran medium yang dibumbui dengan bumbu siap pakai yaitu Shake Shake Gulai Gurih.",
+        star: "5"
+        },
+        {
+        id: 3,
+        background: "https://i.imgur.com/d9kvguM.png",
+        icon: "https://nos.jkt-1.neo.id/mcdonalds/foods/August2020/8hiIH1sJvvzSzZVAsBEg.png",
+        nama: "Sweet Corn",
+        harga: "16800",
+        deskripsi: "Bulir jagung yang direbus hingga menghasilkan rasa manis yang alami dan bernutrisi ",
+        star: "4"
+        },
+        {
+        id: 4,
+        background: "https://i.imgur.com/d9kvguM.png",
+        icon: "https://nos.jkt-1.neo.id/mcdonalds/foods/October2019/N6lms2s2I8EeH6Iq4uAi.png",
+        nama: "French Fries",
+        harga: "52999",
+        deskripsi: "Kentang goreng renyah dan gurih",
+        star: "3"
+        },
+        {
+        id: 5,
+        background: "https://i.imgur.com/d9kvguM.png",
+        icon: "https://nos.jkt-1.neo.id/mcdonalds/foods/August2020/LDpG4wTa231U95h0w0qB.png",
+        nama: "Chicken Fingers, Spicy Chicken Bites, Reg. Fries",
+        harga: "36000",
+        deskripsi: "6 pcs Spicy Chicken Bites, 5 pcs Chicken Fingers, Regular Fries, lengkap dengan dipping Crunchy Bubble dan saus Creamy Mayo ",
+        star: "2"
+        },
+        {
+        id: 6,
+        background: "https://i.imgur.com/d9kvguM.png",
+        icon: "https://nos.jkt-1.neo.id/mcdonalds/foods/June2020/Bufjau4nuXkyI0bQHYov.png",
+        nama: "Menu Receh 1+1 Rp18,182",
+        harga: "18182",
+        deskripsi: "Pilih salah 1 menu : Sweet Corn, Regular Fries, Chicken Snack Wrap, Breakfast Wrap, Beef Burger, Chicken Burger, Chicken Fingers, Spicy Chicken Bites ",
+        star: "4"
+        }
+      ]
 ]
