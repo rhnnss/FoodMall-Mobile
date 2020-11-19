@@ -74,7 +74,7 @@ export function fecthProducts(dispatch) {
     try {
       const res = await fetch('http://192.168.100.12:4090/newProducts');
       const data = await res.json();
-      dispatch(getProductsSuccess(data));
+      dispatch(getProductsSuccess(data.results));
     } catch (e) {
       dispatch(getProductsFailed());
     }

@@ -13,6 +13,8 @@ import CategoryChicken from '../screens/MenuCategory/CategoryChicken';
 import CategoryFish from '../screens/MenuCategory/CategoryFish';
 import CategoryIceCream from '../screens/MenuCategory/CategoryIceCream';
 import CategorySnacks from '../screens/MenuCategory/CategorySnacks';
+import SearchInHome from '../screens/SearchInHome';
+import TestingLoad from '../screens/TestingLoad/TestingLoad';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -85,6 +87,16 @@ const Router = () => {
       <Stack.Screen
         name="CategorySnacks"
         component={CategorySnacks}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="SearchInHome"
+        component={SearchInHome}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="TestingLoad"
+        component={TestingLoad}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

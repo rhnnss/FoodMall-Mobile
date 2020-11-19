@@ -1,47 +1,50 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {SearchIcon} from '../../constants/icons';
 
 const Search = () => {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
-      <SearchIcon width={20} height={20} style={styles.search} />
-      <TextInput style={styles.input} placeholder="Searchh" />
-    </View>
+    <TouchableOpacity
+      style={styles.baseContainer}
+      onPress={() => navigation.navigate('SearchInHome')}>
+      <View style={styles.container}>
+        <SearchIcon width={20} height={20} style={styles.search} />
+        <Text style={styles.input}>Search</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
 export default Search;
 
 const styles = StyleSheet.create({
-  container: {
-    width: 358.71,
-    flexDirection: 'row',
+  baseContainer: {
     backgroundColor: COLORS.white,
     borderRadius: 14,
-    alignItems: 'center',
+    marginTop: 28,
+    paddingVertical: 15,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 6,
+      height: 2,
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
-    elevation: 6,
-    marginTop: 28,
+
+    elevation: 4,
+  },
+  container: {
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   input: {
     fontFamily: FONTS.regular,
     fontSize: SIZES.body1,
-    paddingLeft: 40,
-    paddingRight: 50,
+    color: COLORS.greyLight,
+    paddingLeft: '39%',
   },
   search: {
     left: 20,

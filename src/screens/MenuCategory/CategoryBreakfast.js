@@ -9,14 +9,20 @@ import {
   TouchableOpacity,
   ImageBackground,
   ScrollView,
+  TextInput,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {Search} from '../../components';
 import {COLORS, FONTS, SIZES} from '../../constants';
 import {StarActive, StarNonActive} from '../../constants/icons';
+import {SearchIcon} from '../../constants/icons';
+import {Input} from 'react-native-elements';
+import _ from 'lodash';
 
 const CategoryBreakfast = () => {
-  const [dataSource, setDataSource] = useState([]);
+  const [search, setSearch] = useState('');
+  const [filteredDataSource, setFilteredDataSource] = useState([]);
+  const [masterDataSource, setMasterDataSource] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
@@ -24,13 +30,34 @@ const CategoryBreakfast = () => {
     fetch('http://192.168.100.12:4090/newProducts')
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson);
-        setDataSource(responseJson);
+        setMasterDataSource(responseJson.results);
+        setFilteredDataSource(responseJson.results);
         setLoading(false);
       });
   }, []);
 
-  let renderProducts = dataSource.map((item) => {
+  const searchFilterFunction = (text) => {
+    // Check if searched text is not blank
+    if (text) {
+      // Inserted text is not blank
+      // Filter the masterDataSource
+      // Update FilteredDataSource
+      const newData = masterDataSource.filter(function (item) {
+        const itemData = item.nama ? item.nama.toUpperCase() : ''.toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setFilteredDataSource(newData);
+      setSearch(text);
+    } else {
+      // Inserted text is blank
+      // Update FilteredDataSource with masterDataSource
+      setFilteredDataSource(masterDataSource);
+      setSearch(text);
+    }
+  };
+
+  let renderProducts = filteredDataSource.map((item) => {
     const Star = () => {
       if (item.star === '5')
         return (
@@ -145,9 +172,18 @@ const CategoryBreakfast = () => {
         colors={['rgba(255, 214, 62, 100)', COLORS.primary]}
         style={styles.HeaderContainer}>
         <Text style={styles.headerLabel}>Breakfast Menu</Text>
-        <View style={styles.search}>
-          <Search />
+
+        {/* --------------------------------- Search ---------------------------------------- */}
+        <View style={styles.searchContainer}>
+          <SearchIcon width={20} height={20} style={styles.search} />
+          <TextInput
+            style={styles.input}
+            placeholder="Type your menu"
+            onChangeText={(val) => searchFilterFunction(val)}
+            value={search}
+          />
         </View>
+        {/* END SEARCH */}
       </LinearGradient>
       <ScrollView style={{marginTop: 15}}>
         {loading == true ? (
@@ -242,5 +278,30 @@ const styles = StyleSheet.create({
   },
   productsContainer: {
     marginBottom: 30,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    backgroundColor: COLORS.white,
+    borderRadius: 14,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 6,
+    marginTop: 28,
+  },
+  input: {
+    fontFamily: FONTS.regular,
+    fontSize: SIZES.body1,
+    width: 325,
+    paddingRight: 20,
+    paddingLeft: 30,
+  },
+  search: {
+    left: 20,
   },
 });

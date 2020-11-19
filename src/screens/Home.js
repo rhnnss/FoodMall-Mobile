@@ -44,6 +44,7 @@ const Home = ({dispatch, products, loading, hasErrors}) => {
       if (product.role === 'Home') {
         return <Products key={product.id} data={product} />;
       }
+      // return <Products key={product.id} data={product} />;
     });
   };
 
@@ -185,8 +186,8 @@ const styles = StyleSheet.create({
     height: 236,
     borderRadius: 1000,
     position: 'absolute',
-    top: -100,
-    left: 210,
+    top: -80,
+    right: -50,
     transform: [{rotate: '-65deg'}],
   },
   RandomProduct: {

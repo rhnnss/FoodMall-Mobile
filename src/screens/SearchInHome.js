@@ -10,16 +10,18 @@ import {
   ImageBackground,
   ScrollView,
   TextInput,
+  FlatList,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {SearchIcon} from '../../constants/icons';
-import {COLORS, FONTS, SIZES} from '../../constants';
-import {StarActive, StarNonActive} from '../../constants/icons';
+import {COLORS, FONTS, SIZES} from '../constants';
+import {StarActive, StarNonActive, SearchIcon} from '../constants/icons';
 
-const CategoryBeef = () => {
+const SearchInHome = () => {
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [filteredDataSourced, setFilteredDataSource] = useState([]);
   const [search, setSearch] = useState('');
+  
+  const [page, setPage] = useState(1);
 
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
@@ -28,7 +30,6 @@ const CategoryBeef = () => {
     fetch('http://192.168.100.12:4090/newProducts')
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson);
         setMasterDataSource(responseJson.results);
         setFilteredDataSource(responseJson.results);
         setLoading(false);
@@ -124,37 +125,37 @@ const CategoryBeef = () => {
       );
     };
 
-    if (item.role === 'Beef') {
-      return (
-        <TouchableOpacity
-          style={styles.button}
-          key={item.id}
-          onPress={() =>
-            navigation.navigate('CardItemDetails', {
-              value: item,
-              id: item.id,
-              title: item.nama,
-              image: item.icon,
-              price: item.harga,
-              star: item.star,
-              description: item.deskripsi,
-              coma: convertToRupiah,
-            })
-          }>
-          <ImageBackground
-            source={{uri: item.background}}
-            style={styles.backgroundProduct}>
-            <Image source={{uri: item.icon}} style={styles.product} />
-          </ImageBackground>
+    // if (item.role === 'Beef') {
+    return (
+      <TouchableOpacity
+        style={styles.button}
+        key={item.id}
+        onPress={() =>
+          navigation.navigate('CardItemDetails', {
+            value: item,
+            id: item.id,
+            title: item.nama,
+            image: item.icon,
+            price: item.harga,
+            star: item.star,
+            description: item.deskripsi,
+            coma: convertToRupiah,
+          })
+        }>
+        <ImageBackground
+          source={{uri: item.background}}
+          style={styles.backgroundProduct}>
+          <Image source={{uri: item.icon}} style={styles.product} />
+        </ImageBackground>
 
-          <View style={styles.info}>
-            <Text style={styles.labelTitle}>{item.nama}</Text>
-            <Text style={styles.valuePrice}>{convertToRupiah(item.harga)}</Text>
-          </View>
-          <Star />
-        </TouchableOpacity>
-      );
-    }
+        <View style={styles.info}>
+          <Text style={styles.labelTitle}>{item.nama}</Text>
+          <Text style={styles.valuePrice}>{convertToRupiah(item.harga)}</Text>
+        </View>
+        <Star />
+      </TouchableOpacity>
+    );
+    // }
   });
 
   return (
@@ -164,7 +165,7 @@ const CategoryBeef = () => {
         end={{x: 1, y: 0}}
         colors={['rgba(255, 214, 62, 100)', COLORS.primary]}
         style={styles.HeaderContainer}>
-        <Text style={styles.headerLabel}>Beef Menu</Text>
+        <Text style={styles.headerLabel}>Let’s Search Your Product</Text>
         {/* --------------------------------- Search ---------------------------------------- */}
         <View style={styles.searchContainer}>
           <SearchIcon width={20} height={20} style={styles.search} />
@@ -176,6 +177,7 @@ const CategoryBeef = () => {
           />
         </View>
       </LinearGradient>
+      {/* Products */}
       <ScrollView style={{marginTop: 15}}>
         {loading == true ? (
           <View
@@ -187,16 +189,17 @@ const CategoryBeef = () => {
             <ActivityIndicator size={50} color={COLORS.primary} />
           </View>
         ) : (
-          <View style={styles.productsContainer}>
+          {/* <View style={styles.productsContainer}>
             <View style={styles.Products}>{renderProducts}</View>
-          </View>
+          </View> */}
+          <FlatList  />
         )}
       </ScrollView>
     </View>
   );
 };
 
-export default CategoryBeef;
+export default SearchInHome;
 
 const styles = StyleSheet.create({
   Icon: {
