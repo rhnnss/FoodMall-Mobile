@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import {
   Image,
@@ -10,7 +11,12 @@ import {
 import {images, FONTS, SIZES, COLORS} from '../constants';
 import {BORDER_RADIUS} from '../constants/themes';
 
-const Account = () => {
+const Account = ({navigation}) => {
+  const _logOut = async () => {
+    AsyncStorage.clear();
+    return navigation.navigate('Register');
+  };
+
   return (
     <ScrollView style={{backgroundColor: COLORS.white}}>
       <View style={styles.container}>
@@ -20,7 +26,7 @@ const Account = () => {
             <Image source={images.BigAvatar} style={styles.avatar}></Image>
           </View>
           <View style={styles.headerTextContainer}>
-            <Text style={styles.headerLabel}>Hey, Albert Flores</Text>
+            <Text style={styles.headerLabel}>Hey, Albert Einsten</Text>
             <Text style={styles.headerValue}>Let’s find quality food</Text>
           </View>
         </View>
@@ -38,7 +44,7 @@ const Account = () => {
         </View>
 
         {/* ---------------------------- Log Out ---------------------------- */}
-        <TouchableOpacity style={styles.logoutButton}>
+        <TouchableOpacity style={styles.logoutButton} onPress={() => _logOut()}>
           <Text style={styles.buttonValue}>Log Out</Text>
         </TouchableOpacity>
       </View>

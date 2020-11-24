@@ -47,6 +47,11 @@ import LogoSplash from '../assets/icons/LogoSplash';
 
 import Avatar from '../assets/icons/Avatar';
 
+import VectorRegister from '../assets/icons/Register';
+import VectorLogin from '../assets/icons/Login';
+import UsernameIcon from '../assets/icons/username';
+import PasswordIcon from '../assets/icons/password';
+
 export {
   ArrowBack,
   ArrowDown,
@@ -89,4 +94,8 @@ export {
   Check,
   Avatar,
   IceCream,
+  VectorRegister,
+  VectorLogin,
+  UsernameIcon,
+  PasswordIcon,
 };

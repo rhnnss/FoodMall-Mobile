@@ -6,7 +6,6 @@ import {BottomTabNavigator} from '../components';
 import CardItemDetails from '../screens/CardItemDetails';
 import PaymentMethod from '../screens/PaymentMethod';
 import FinishPayment from '../screens/FinishPayment';
-import Splash from '../screens/Splash';
 import CategoryBreakfast from '../screens/MenuCategory/CategoryBreakfast';
 import CategoryBeef from '../screens/MenuCategory/CategoryBeef';
 import CategoryChicken from '../screens/MenuCategory/CategoryChicken';
@@ -15,6 +14,9 @@ import CategoryIceCream from '../screens/MenuCategory/CategoryIceCream';
 import CategorySnacks from '../screens/MenuCategory/CategorySnacks';
 import SearchInHome from '../screens/SearchInHome';
 import TestingLoad from '../screens/TestingLoad/TestingLoad';
+import Splash from '../screens/Startup/Splash';
+import Login from '../screens/Startup/Login';
+import Register from '../screens/Startup/Register';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -33,15 +35,30 @@ const MainApp = () => {
 // Bagian Tampilan
 const Router = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Splash">
       <Stack.Screen
         name="Splash"
         component={Splash}
         options={{headerShown: false}}
       />
       <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Register"
+        component={Register}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
         name="MainApp"
         component={MainApp}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Homeless"
+        component={Home}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -94,11 +111,11 @@ const Router = () => {
         component={SearchInHome}
         options={{headerShown: false}}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="TestingLoad"
         component={TestingLoad}
         options={{headerShown: false}}
-      />
+      /> */}
     </Stack.Navigator>
   );
 };

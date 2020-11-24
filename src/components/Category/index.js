@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   label: {
     marginTop: 11,
     fontFamily: FONTS.medium,
-    fontSize: SIZES.body1,
+    fontSize: SIZES.default,
     color: COLORS.grey,
   },
 });

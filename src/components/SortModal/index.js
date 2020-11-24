@@ -35,6 +35,7 @@ export default class SortModal extends Component {
       ],
     };
   }
+  z;
 
   show = () => {
     this.setState({show: true});

@@ -4,7 +4,25 @@ var app = express();
 var mysql = require('mysql');
 var bodyParser = require('body-parser');
 
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const jwt = require('jsonwebtoken');
+
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 app.use(bodyParser.json({type: 'application/json'}));
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.use(
+  cors({
+    origin: ['http://192.168.100.12:4090'],
+    methods: ['GET', 'POST'],
+    credentials: true, //Enable Cookies
+  }),
+);
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
 
 var con = mysql.createConnection({
@@ -45,6 +63,7 @@ app.get('/newProducts', (req, res) => {
       const endIndex = page * limit;
 
       const results = {};
+
       results.current = {
         page: page,
         limit: limit,
@@ -58,12 +77,73 @@ app.get('/newProducts', (req, res) => {
         limit: limit,
       };
 
-      console.log(+rows.length);
-
       results.results = rows.slice(startIndex, endIndex);
       res.send(results);
     }
   });
+});
+
+app.post('/register', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  bcrypt.hash(password, saltRounds, (err, hash) => {
+    if (err) {
+      console.log(err);
+    }
+
+    con.query(
+      'INSERT INTO users (username, password) VALUES (?,?)',
+      [username, hash],
+      (err, result) => {
+        console.log(err);
+        console.log(result);
+      },
+    );
+  });
+});
+
+app.post('/login', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  con.query(
+    'SELECT * FROM users WHERE username=?;',
+    username,
+    (err, result) => {
+      if (err) {
+        res.send({err: err});
+      }
+
+      if (result.length > 0) {
+        bcrypt.compare(password, result[0].password, (err, response) => {
+          if (response) {
+            // Token
+            const id = result[0].id;
+            const token = jwt.sign({id}, 'foodmallindonesia', {
+              expiresIn: 300,
+            });
+
+            // req.session.user = result;
+
+            // if true send json with object
+            res.json({
+              auth: true,
+              token: token,
+              result: result,
+            });
+          } else {
+            res.json({
+              auth: false,
+              message: 'Wrong username/password combination',
+            });
+          }
+        });
+      } else {
+        res.json({auth: false, message: 'No user exists!'});
+      }
+    },
+  );
 });
 
 // app.get('/categoryBreakfast', (req, res) => {

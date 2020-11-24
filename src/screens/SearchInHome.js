@@ -20,21 +20,26 @@ const SearchInHome = () => {
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [filteredDataSourced, setFilteredDataSource] = useState([]);
   const [search, setSearch] = useState('');
-  
-  const [page, setPage] = useState(1);
 
-  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+
   const navigation = useNavigation();
 
   useEffect(() => {
-    fetch('http://192.168.100.12:4090/newProducts')
+    setLoading(true);
+    getData();
+  }, [page]);
+
+  const getData = () => {
+    fetch(`http://192.168.100.12:4090/newProducts?page=${page}&limit=3`)
       .then((response) => response.json())
       .then((responseJson) => {
-        setMasterDataSource(responseJson.results);
-        setFilteredDataSource(responseJson.results);
+        setMasterDataSource(masterDataSource.concat(responseJson.results));
+        setFilteredDataSource(filteredDataSourced.concat(responseJson.results));
         setLoading(false);
       });
-  }, []);
+  };
 
   const searchFilterFunction = (text) => {
     if (text) {
@@ -51,7 +56,8 @@ const SearchInHome = () => {
     }
   };
 
-  let renderProducts = filteredDataSourced.map((item) => {
+  // --------------------------------- Render Item ---------------------------------
+  const Products = ({item}) => {
     const Star = () => {
       if (item.star === '5')
         return (
@@ -125,39 +131,55 @@ const SearchInHome = () => {
       );
     };
 
-    // if (item.role === 'Beef') {
     return (
-      <TouchableOpacity
-        style={styles.button}
-        key={item.id}
-        onPress={() =>
-          navigation.navigate('CardItemDetails', {
-            value: item,
-            id: item.id,
-            title: item.nama,
-            image: item.icon,
-            price: item.harga,
-            star: item.star,
-            description: item.deskripsi,
-            coma: convertToRupiah,
-          })
-        }>
-        <ImageBackground
-          source={{uri: item.background}}
-          style={styles.backgroundProduct}>
-          <Image source={{uri: item.icon}} style={styles.product} />
-        </ImageBackground>
+      <View style={styles.Products}>
+        <TouchableOpacity
+          style={styles.button}
+          key={item.id}
+          onPress={() =>
+            navigation.navigate('CardItemDetails', {
+              value: item,
+              id: item.id,
+              title: item.nama,
+              image: item.icon,
+              price: item.harga,
+              star: item.star,
+              description: item.deskripsi,
+              coma: convertToRupiah,
+            })
+          }>
+          <ImageBackground
+            source={{uri: item.background}}
+            style={styles.backgroundProduct}>
+            <Image source={{uri: item.icon}} style={styles.product} />
+          </ImageBackground>
 
-        <View style={styles.info}>
-          <Text style={styles.labelTitle}>{item.nama}</Text>
-          <Text style={styles.valuePrice}>{convertToRupiah(item.harga)}</Text>
-        </View>
-        <Star />
-      </TouchableOpacity>
+          <View style={styles.info}>
+            <Text style={styles.labelTitle}>{item.nama}</Text>
+            <Text style={styles.valuePrice}>{convertToRupiah(item.harga)}</Text>
+          </View>
+          <Star />
+        </TouchableOpacity>
+      </View>
     );
-    // }
-  });
+  };
 
+  // --------------------------------- Render Footer & Handle Load More ---------------------------------
+
+  const handleLoadMore = () => {
+    setPage(page + 1);
+    setLoading(true);
+  };
+
+  const renderFooter = () => {
+    return loading ? null : (
+      <View>
+        <ActivityIndicator size={50} color={COLORS.primary} />
+      </View>
+    );
+  };
+
+  // --------------------------------- Common Render ---------------------------------
   return (
     <View style={{height: '100%'}}>
       <LinearGradient
@@ -177,23 +199,21 @@ const SearchInHome = () => {
           />
         </View>
       </LinearGradient>
-      {/* Products */}
-      <ScrollView style={{marginTop: 15}}>
-        {loading == true ? (
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginTop: '50%',
-            }}>
-            <ActivityIndicator size={50} color={COLORS.primary} />
-          </View>
-        ) : (
-          {/* <View style={styles.productsContainer}>
-            <View style={styles.Products}>{renderProducts}</View>
-          </View> */}
-          <FlatList  />
-        )}
+
+      {/* --------------------------------- Products Logic --------------------------------- */}
+      <ScrollView>
+        <FlatList
+          data={filteredDataSourced}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={Products}
+          numColumns={2}
+          ListEmptyComponent={renderFooter}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.1}
+          contentContainerStyle={{paddingVertical: 30}}
+        />
+
+        <View style={{marginTop: 30}}></View>
       </ScrollView>
     </View>
   );
@@ -269,9 +289,6 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     fontSize: SIZES.h1,
     color: COLORS.white,
-  },
-  productsContainer: {
-    marginBottom: 30,
   },
   searchContainer: {
     flexDirection: 'row',

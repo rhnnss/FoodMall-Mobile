@@ -1,5 +1,6 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  FlatList,
   Image,
   ScrollView,
   StyleSheet,
@@ -14,7 +15,90 @@ import LinearGradient from 'react-native-linear-gradient';
 import {connect} from 'react-redux';
 import {fecthProducts} from '../redux/Shopping/Shopping-actions';
 
-const Home = ({dispatch, products, loading, hasErrors}) => {
+const Home = ({route, dispatch, products, loading, hasErrors, navigation}) => {
+  const {username} = route.params;
+  const [dataSortByName, setDataSortByName] = useState([]);
+  const [masterDataSource, setMasterDataSource] = useState([]);
+
+  const [lower, setLower] = useState(
+    products.sort((a, b) => (+a.harga > +b.harga ? 1 : -1)),
+  );
+  const [higher, setHigher] = useState(
+    products.sort((a, b) => (+a.harga < +b.harga ? 1 : -1)),
+  );
+  const [abjad, setAbjad] = useState(
+    products.sort((a, b) =>
+      a.harga.toLowerCase() > b.harga.toLowerCase() ? 1 : -1,
+    ),
+  );
+
+  useEffect(() => {
+    dispatch(fecthProducts());
+    setMasterDataSource(products);
+    setDataSortByName(products);
+  }, [dispatch]);
+
+  // ------------------------------- Sorting -------------------------------
+
+  const sortingA = () => {
+    let sortByName = masterDataSource.sort(compare);
+
+    // Sorting
+    function compare(a, b) {
+      const namaA = a.nama.toUpperCase();
+      const namaB = b.nama.toUpperCase();
+
+      let comparison = 0;
+      if (namaA > namaB) {
+        comparison = 1;
+      } else if (namaA < namaB) {
+        comparison = -1;
+      }
+      return comparison;
+    }
+
+    return setDataSortByName(sortByName);
+  };
+
+  const sortingPriceHigher = () => {
+    let sortByHigher = masterDataSource.sort(compareHigher);
+
+    function compareHigher(a, b) {
+      const hargaA = +a.harga;
+      const hargaB = +b.harga;
+
+      let comparison = 0;
+      if (hargaA < hargaB) {
+        comparison = 1;
+      } else if (hargaA > hargaB) {
+        comparison = -1;
+      }
+      return comparison;
+    }
+
+    return setDataSortByName(sortByHigher);
+  };
+
+  const sortingPriceLower = () => {
+    let sortByLower = masterDataSource.sort(compareLower);
+
+    // Sorting
+    function compareLower(a, b) {
+      const hargaA = a.harga;
+      const hargaB = b.harga;
+
+      let comparison = 0;
+      if (hargaA > hargaB) {
+        comparison = 1;
+      } else if (hargaA < hargaB) {
+        comparison = -1;
+      }
+      return comparison;
+    }
+
+    return setDataSortByName(sortByLower);
+  };
+
   let popupRef = React.createRef();
 
   const onShowPopup = () => {
@@ -25,13 +109,7 @@ const Home = ({dispatch, products, loading, hasErrors}) => {
     popupRef.close();
   };
 
-  useEffect(() => {
-    dispatch(fecthProducts());
-  }, [dispatch]);
-
-  console.log(products);
-
-  // Render Products
+  //------------------------------- Render Products -------------------------------
   const renderProducts = () => {
     if (loading) {
       return <Text>Loading Man...</Text>;
@@ -40,12 +118,29 @@ const Home = ({dispatch, products, loading, hasErrors}) => {
       return <Text>No Products to Display</Text>;
     }
 
-    return products.map((product) => {
-      if (product.role === 'Home') {
-        return <Products key={product.id} data={product} />;
-      }
-      // return <Products key={product.id} data={product} />;
-    });
+    return products
+      .sort((a, b) => (+a.harga > +b.harga ? 1 : -1))
+      .map((product) => {
+        if (product.role === 'Home') {
+          return <Products key={product.id} data={product} />;
+        }
+      });
+
+    // return (
+    //   <FlatList
+    //     data={masterDataSource}
+    //     keyExtractor={(item, index) => index.toString()}
+    //     renderItem={({item}) =>
+    //       item.role === 'Fish' ? <Products data={item} /> : null
+    //     }
+    //     contentContainerStyle={{
+    //       lexDirection: 'row',
+    //       justifyContent: 'space-between',
+    //       paddingHorizontal: 12,
+    //       marginTop: -35,
+    //     }}
+    //   />
+    // );
   };
 
   return (
@@ -54,7 +149,7 @@ const Home = ({dispatch, products, loading, hasErrors}) => {
         {/*------------------------------- Header Container ------------------------------------- */}
         <View style={styles.headerContainer}>
           <View style={styles.HeaderText}>
-            <Text style={styles.LabelHeader}>Hey, Albert Flores</Text>
+            <Text style={styles.LabelHeader}>{username}</Text>
             <Text style={styles.ValueHeader}>Let’s find quality food</Text>
           </View>
 
@@ -64,7 +159,13 @@ const Home = ({dispatch, products, loading, hasErrors}) => {
             colors={['rgba(255, 253, 210, 0)', COLORS.primary]}
             style={styles.linearGradient}></LinearGradient>
 
-          <TouchableOpacity style={styles.avatar} onPress={() => test()}>
+          <TouchableOpacity
+            style={styles.avatar}
+            onPress={() =>
+              navigation.navigate('Account', {
+                username: username,
+              })
+            }>
             <Image source={images.avatar}></Image>
             <View style={styles.miniCircle} />
           </TouchableOpacity>
@@ -89,15 +190,19 @@ const Home = ({dispatch, products, loading, hasErrors}) => {
           </View>
         </View>
 
+        {/* <TouchableOpacity onPress={() => renderProductsWithSort()}>
+          <Text>Press To Short</Text>
+        </TouchableOpacity> */}
+
         {/*------------------------------- Our Product ------------------------------------- */}
         <View style={styles.ourProduct}>
           <Text style={styles.LabelHeader2}>Our Product</Text>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.containerSortBy}
             onPress={onShowPopup}>
             <Text style={styles.LabelHeader2}>Sort By</Text>
             <ArrowDown />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         {/*------------------------------- RandomProduct ------------------------------------- */}
@@ -195,6 +300,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 12,
     flexWrap: 'wrap',
+    marginTop: -35,
   },
   Search: {
     paddingHorizontal: 22,
