@@ -8,13 +8,22 @@ import {
 } from 'react-native';
 import {COLORS, SIZES, FONTS, BORDER_RADIUS} from '../../constants';
 import {Divider, Input} from 'react-native-elements';
-import {PasswordIcon, UsernameIcon, VectorLogin} from '../../constants/icons';
+import {
+  EyeOff,
+  EyeOn,
+  PasswordIcon,
+  UsernameIcon,
+  VectorLogin,
+} from '../../constants/icons';
 import Axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {connect} from 'react-redux';
+import {getUsername} from '../../redux/Username/Username-action';
 
-const Login = ({navigation, route}) => {
+const Login = ({navigation, route, handleGetUsername}) => {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
   const {getData} = route.params;
 
   const iconWidth = 24;
@@ -26,6 +35,8 @@ const Login = ({navigation, route}) => {
     const _validasiSession = async () => {
       const token = await AsyncStorage.getItem('@user_token');
       const usernameItem = await AsyncStorage.getItem('@username');
+
+      handleGetUsername(usernameItem);
 
       if (token && usernameItem) {
         setUsername(usernameItem);
@@ -56,11 +67,14 @@ const Login = ({navigation, route}) => {
         const userToken = response.data.token;
         const userUsername = response.data.result[0].username;
 
+        handleGetUsername(userUsername);
+
         // Set Require for next session
         AsyncStorage.setItem('@user_token', userToken);
         AsyncStorage.setItem('@username', userUsername);
         // AsyncStorage.multiSet([['@user_token', userToken], ['@username', userUsername]]);
 
+        setUsername(userUsername);
         console.log(response.data.result[0].username);
 
         // Get Username
@@ -69,14 +83,40 @@ const Login = ({navigation, route}) => {
             ' ' +
             response.data.result[0].username,
         );
-        return navigation.navigate('Home', {
-          username: userUsername,
+
+        return navigation.navigate('MainApp', {
+          screen: 'Home',
+          params: {username: userUsername},
         });
       }
     });
     setUsername(null);
     setPassword(null);
     getData();
+  };
+
+  const ToggleVisibility = () => {
+    if (!passwordVisibility) {
+      return (
+        <EyeOn
+          width={iconWidth}
+          height={iconHeight}
+          onPress={() => handleTogglePasswordVisibility()}
+        />
+      );
+    } else {
+      return (
+        <EyeOff
+          width={iconWidth}
+          height={iconHeight}
+          onPress={() => handleTogglePasswordVisibility()}
+        />
+      );
+    }
+  };
+
+  const handleTogglePasswordVisibility = () => {
+    setPasswordVisibility(!passwordVisibility);
   };
 
   return (
@@ -102,6 +142,7 @@ const Login = ({navigation, route}) => {
             value={username}
             inputContainerStyle={{borderColor: COLORS.primary}}
             inputStyle={{fontFamily: FONTS.regular, fontSize: SIZES.body3}}
+            maxLength={8}
           />
           <View style={{marginTop: 5, marginBottom: 15}}>
             <Input
@@ -110,9 +151,10 @@ const Login = ({navigation, route}) => {
               style={styles}
               onChangeText={(value) => setPassword(value)}
               value={password}
-              secureTextEntry={true}
+              secureTextEntry={passwordVisibility}
               inputContainerStyle={{borderColor: COLORS.primary}}
               inputStyle={{fontFamily: FONTS.regular, fontSize: SIZES.body3}}
+              rightIcon={<ToggleVisibility />}
             />
           </View>
         </View>
@@ -156,8 +198,11 @@ const Login = ({navigation, route}) => {
     </ScrollView>
   );
 };
+const mapDispatchToProps = (dispatch) => ({
+  handleGetUsername: (username) => dispatch(getUsername(username)),
+});
 
-export default Login;
+export default connect(null, mapDispatchToProps)(Login);
 
 const styles = StyleSheet.create({
   basecontainer: {

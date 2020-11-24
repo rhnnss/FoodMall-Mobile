@@ -10,8 +10,10 @@ import {
 } from 'react-native';
 import {images, FONTS, SIZES, COLORS} from '../constants';
 import {BORDER_RADIUS} from '../constants/themes';
+import {connect} from 'react-redux';
+import {getUsername} from '../redux/Username/Username-action';
 
-const Account = ({navigation}) => {
+const Account = ({navigation, username}) => {
   const _logOut = async () => {
     AsyncStorage.clear();
     return navigation.navigate('Register');
@@ -26,7 +28,7 @@ const Account = ({navigation}) => {
             <Image source={images.BigAvatar} style={styles.avatar}></Image>
           </View>
           <View style={styles.headerTextContainer}>
-            <Text style={styles.headerLabel}>Hey, Albert Einsten</Text>
+            <Text style={styles.headerLabel}>Hey,{username} </Text>
             <Text style={styles.headerValue}>Let’s find quality food</Text>
           </View>
         </View>
@@ -52,7 +54,11 @@ const Account = ({navigation}) => {
   );
 };
 
-export default Account;
+const mapStateToProps = (state) => ({
+  username: state.userData.username,
+});
+
+export default connect(mapStateToProps)(Account);
 
 const styles = StyleSheet.create({
   container: {

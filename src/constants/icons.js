@@ -52,6 +52,9 @@ import VectorLogin from '../assets/icons/Login';
 import UsernameIcon from '../assets/icons/username';
 import PasswordIcon from '../assets/icons/password';
 
+import EyeOn from '../assets/icons/eye';
+import EyeOff from '../assets/icons/eye-off';
+
 export {
   ArrowBack,
   ArrowDown,
@@ -98,4 +101,6 @@ export {
   VectorLogin,
   UsernameIcon,
   PasswordIcon,
+  EyeOn,
+  EyeOff,
 };

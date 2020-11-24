@@ -14,8 +14,18 @@ import {ArrowDown} from '../constants/icons';
 import LinearGradient from 'react-native-linear-gradient';
 import {connect} from 'react-redux';
 import {fecthProducts} from '../redux/Shopping/Shopping-actions';
+import {getUsername} from '../redux/Username/Username-action';
 
-const Home = ({route, dispatch, products, loading, hasErrors, navigation}) => {
+const Home = ({
+  route,
+  dispatch,
+  products,
+  loading,
+  hasErrors,
+  navigation,
+  handleFetchProduct,
+  handleGetUsername,
+}) => {
   const {username} = route.params;
   const [dataSortByName, setDataSortByName] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
@@ -33,10 +43,12 @@ const Home = ({route, dispatch, products, loading, hasErrors, navigation}) => {
   );
 
   useEffect(() => {
-    dispatch(fecthProducts());
+    // dispatch(fecthProducts());
+    handleGetUsername(username);
+    handleFetchProduct();
     setMasterDataSource(products);
     setDataSortByName(products);
-  }, [dispatch]);
+  }, [handleGetUsername, handleFetchProduct]);
 
   // ------------------------------- Sorting -------------------------------
 
@@ -161,11 +173,7 @@ const Home = ({route, dispatch, products, loading, hasErrors, navigation}) => {
 
           <TouchableOpacity
             style={styles.avatar}
-            onPress={() =>
-              navigation.navigate('Account', {
-                username: username,
-              })
-            }>
+            onPress={() => navigation.navigate('Account')}>
             <Image source={images.avatar}></Image>
             <View style={styles.miniCircle} />
           </TouchableOpacity>
@@ -225,7 +233,12 @@ const mapStateToProps = (state) => ({
   hasErrors: state.shop.hasErrors,
 });
 
-export default connect(mapStateToProps)(Home);
+const mapDispatchToProps = (dispatch) => ({
+  handleGetUsername: (username) => dispatch(getUsername(username)),
+  handleFetchProduct: () => dispatch(fecthProducts()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
 
 const styles = StyleSheet.create({
   page: {

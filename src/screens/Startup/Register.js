@@ -9,6 +9,8 @@ import {
 import {COLORS, SIZES, FONTS, BORDER_RADIUS} from '../../constants';
 import {Divider, Input} from 'react-native-elements';
 import {
+  EyeOff,
+  EyeOn,
   PasswordIcon,
   UsernameIcon,
   VectorRegister,
@@ -22,6 +24,7 @@ const Register = () => {
   const [password, setPassword] = useState(null);
   const navigation = useNavigation();
   const [dataSource, setDataSource] = useState([]);
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
 
   const iconWidth = 24;
   const iconHeight = 24;
@@ -49,6 +52,30 @@ const Register = () => {
     getDataBase();
   };
 
+  const ToggleVisibility = () => {
+    if (!passwordVisibility) {
+      return (
+        <EyeOn
+          width={iconWidth}
+          height={iconHeight}
+          onPress={() => handleTogglePasswordVisibility()}
+        />
+      );
+    } else {
+      return (
+        <EyeOff
+          width={iconWidth}
+          height={iconHeight}
+          onPress={() => handleTogglePasswordVisibility()}
+        />
+      );
+    }
+  };
+
+  const handleTogglePasswordVisibility = () => {
+    setPasswordVisibility(!passwordVisibility);
+  };
+
   return (
     <ScrollView
       style={styles.basecontainer}
@@ -72,6 +99,7 @@ const Register = () => {
             value={username}
             inputContainerStyle={{borderColor: COLORS.primary}}
             inputStyle={{fontFamily: FONTS.regular, fontSize: SIZES.body3}}
+            maxLength={8}
           />
           <View style={{marginTop: 5, marginBottom: 15}}>
             <Input
@@ -80,9 +108,10 @@ const Register = () => {
               style={styles}
               onChangeText={(value) => setPassword(value)}
               value={password}
-              secureTextEntry={true}
+              secureTextEntry={passwordVisibility}
               inputContainerStyle={{borderColor: COLORS.primary}}
               inputStyle={{fontFamily: FONTS.regular, fontSize: SIZES.body3}}
+              rightIcon={<ToggleVisibility />}
             />
           </View>
         </View>
