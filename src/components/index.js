@@ -10,6 +10,7 @@ import ShippingMethodModal from './ShippingMethodModal';
 import PaymentVia from './PaymentVia';
 import AdressDeliveryModal from './AdressDeliveryModal';
 import CardPayment from './CardPayment';
+import ButtonForOrderAdmin from '././ComponentsOrderAdmin/Button';
 
 export {
   BottomTabNavigator,
@@ -24,4 +25,5 @@ export {
   PaymentVia,
   AdressDeliveryModal,
   CardPayment,
+  ButtonForOrderAdmin,
 };

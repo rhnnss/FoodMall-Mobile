@@ -1,0 +1,5 @@
+"id_pesanan";"name";"adress";"delivery";"id_menu";"icon";"nama_menu";"harga_menu";"jumlah_pesanan"
+1;"Wade Warren";"2118 Thornridge Cir. Syracuse, Connecticut 35624";"Gojek";1;"https://i.imgur.com/kRjQpZg.png";"Triple Burger with Cheese";"25000";5
+2;"Jacob Jones";"2972 Westheimer Rd. Santa Ana, Illinois 85486 ";"Kurir Toko";2;"https://i.imgur.com/kRjQpZg.png";"Beef Burger Deluxe";"150000";3
+3;"Guy Hawkins";"3517 W. Gray St. Utica, Pennsylvania 57867";"Grab";3;"https://i.imgur.com/kRjQpZg.png";"Egg and Cheese Muffin";"56000";4
+4;"Kathryn Murphy";"3891 Ranchview Dr. Richardson, California 62639";"Kurir Toko";4;"https://i.imgur.com/kRjQpZg.png";"Sausage McMuffin with Egg";"26000";2

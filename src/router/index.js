@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Home, ShopCart, Account} from '../screens';
 import {BottomTabNavigator} from '../components';
+
 import CardItemDetails from '../screens/CardItemDetails';
 import PaymentMethod from '../screens/PaymentMethod';
 import FinishPayment from '../screens/FinishPayment';
@@ -17,9 +18,50 @@ import TestingLoad from '../screens/TestingLoad/TestingLoad';
 import Splash from '../screens/Startup/Splash';
 import Login from '../screens/Startup/Login';
 import Register from '../screens/Startup/Register';
+import AllProduk from '../screens/ScreensOrderAdmin/AllProduk';
+import DataPesanan from '../screens/ScreensOrderAdmin/DataPesanan';
+import DetailPesanan from '../screens/ScreensOrderAdmin/DetailPesanan';
+import FinishSendToKurir from '../screens/ScreensOrderAdmin/FinishSendToKurir';
+import DashboardOrderAdmin from '../screens/ScreensOrderAdmin/DashboardOrderAdmin';
+import Produk from '../screens/ScreensOrderAdmin/Produk';
+import UpdateProduct from '../screens/ScreensOrderAdmin/UpdateProduct';
+import DashboardCourier from '../screens/ScreensCourierAdmin/DashboardCourier';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
+const SlideFromRight = () => {
+  const translateX = position.interpolate({
+    inputRange: [index - 1, index],
+    outputRange: [width, 0],
+  });
+
+  return {transform: [{translateX}]};
+};
+
+const TransitionConfiguration = () => {
+  return {
+    transitionSpec: {
+      duration: 750,
+      easing: Easing.out(Easing.poly(4)),
+      timing: Animated.timing,
+      useNativeDriver: true,
+    },
+    screenInterpolator: (sceneProps) => {
+      const {layout, position, scene} = sceneProps;
+      const width = layout.initWidth;
+      const height = layout.initHeight;
+      const {index, route} = scene;
+      const params = route.params || {}; // <- That's new
+      const transition = params.transition || 'default'; // <- That's new
+      return {
+        default: SlideFromRight(index, position, width),
+        bottomTransition: SlideFromBottom(index, position, height),
+        collapseTransition: CollapseTransition(index, position),
+      }[transition];
+    },
+  };
+};
 
 // Bagian Tab
 const MainApp = () => {
@@ -35,7 +77,9 @@ const MainApp = () => {
 // Bagian Tampilan
 const Router = () => {
   return (
-    <Stack.Navigator initialRouteName="Splash">
+    <Stack.Navigator
+      initialRouteName="Splash"
+      TransitionConfiguration={TransitionConfiguration}>
       <Stack.Screen
         name="Splash"
         component={Splash}
@@ -111,11 +155,48 @@ const Router = () => {
         component={SearchInHome}
         options={{headerShown: false}}
       />
-      {/* <Stack.Screen
-        name="TestingLoad"
-        component={TestingLoad}
+
+      {/* ---------------------- Order Admin ---------------------- */}
+      <Stack.Screen
+        name="AllProduk"
+        component={AllProduk}
         options={{headerShown: false}}
-      /> */}
+      />
+      <Stack.Screen
+        name="DataPesanan"
+        component={DataPesanan}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="DetailPesanan"
+        component={DetailPesanan}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="FinishSendToKurir"
+        component={FinishSendToKurir}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="DashboardOrderAdmin"
+        component={DashboardOrderAdmin}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Produk"
+        component={Produk}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="UpdateProduct"
+        component={UpdateProduct}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="DashboardCourier"
+        component={DashboardCourier}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };

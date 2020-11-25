@@ -84,10 +84,18 @@ const Login = ({navigation, route, handleGetUsername}) => {
             response.data.result[0].username,
         );
 
-        return navigation.navigate('MainApp', {
-          screen: 'Home',
-          params: {username: userUsername},
-        });
+        if (userUsername === 'admin') {
+          return navigation.navigate('DashboardOrderAdmin', {
+            username: userUsername,
+          });
+        } else if (userUsername === 'courier') {
+          return navigation.navigate('DashboardCourier');
+        } else {
+          navigation.navigate('MainApp', {
+            screen: 'Home',
+            params: {username: userUsername},
+          });
+        }
       }
     });
     setUsername(null);

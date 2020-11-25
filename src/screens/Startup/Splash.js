@@ -13,10 +13,21 @@ const Splash = ({navigation}) => {
       // How to access screen on between navigator this is different from sending data between screen
       // use object screen with contain the screen name
       // to send new params you must make a new object with the value an object ... and value from params you want to send
-      navigation.navigate('MainApp', {
-        screen: 'Home',
-        params: {username: usernameItem},
-      });
+
+      if (usernameItem === 'admin') {
+        return navigation.navigate('DashboardOrderAdmin', {
+          username: usernameItem,
+        });
+      } else if (usernameItem === 'courier') {
+        return navigation.navigate('DashboardCourier', {
+          username: usernameItem,
+        });
+      } else {
+        return navigation.navigate('MainApp', {
+          screen: 'Home',
+          params: {username: usernameItem},
+        });
+      }
     } else {
       navigation.navigate('Register');
     }

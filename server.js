@@ -146,6 +146,105 @@ app.post('/login', (req, res) => {
   );
 });
 
+// ------------------------------------ Permission Order Admin for Manage Database ----------------------------------------
+
+app.get('/dataPesanan', (req, res) => {
+  con.query('SELECT * FROM datapesanan', (error, rows, fields) => {
+    if (!!error) console.log(error);
+    else {
+      res.send(rows);
+    }
+  });
+});
+
+app.get('/OrderAdmin', (req, res) => {
+  con.query('SELECT * FROM newproducts', (error, rows, fields) => {
+    if (error) console.log(error);
+    else {
+      console.log(rows);
+      res.send(rows);
+    }
+  });
+});
+
+app.post('/OrderAdmin', (req, res) => {
+  con.query(
+    'insert into newproducts set ? ',
+    req.body,
+    (error, rows, fields) => {
+      if (error) console.log(error);
+      else {
+        console.log(rows);
+        res.send(JSON.stringify(rows));
+      }
+    },
+  );
+});
+
+//------------------------------ Search from id ------------------------------
+app.get('/OrderAdmin/:id', (req, res) => {
+  con.query(
+    'SELECT * FROM newproducts where id=? ',
+    req.params.id,
+    (error, rows, fields) => {
+      if (error) console.log(error);
+      else {
+        console.log(rows);
+        res.send(JSON.stringify(rows));
+      }
+    },
+  );
+});
+
+//------------------------------ Delete ------------------------------
+app.delete('/OrderAdmin/:id', (req, res) => {
+  console.log('Params' + req.params.id);
+  con.query(
+    'DELETE FROM newproducts where id=? ',
+    req.params.id,
+    (error, rows, fields) => {
+      if (error) console.log(error);
+      else {
+        console.log(rows);
+        res.end('Succes Delete');
+      }
+    },
+  );
+});
+
+//------------------------------ Update ------------------------------
+app.put('/OrderAdmin', (req, res) => {
+  con.query(
+    'UPDATE newproducts SET background=?, icon=?, nama=?, harga=?, deskripsi=?, star=? WHERE id=? ',
+    [
+      req.body.background,
+      req.body.icon,
+      req.body.nama,
+      req.body.harga,
+      req.body.deskripsi,
+      req.body.star,
+      req.body.id,
+    ],
+    (error, rows, fields) => {
+      if (error) console.log(error);
+      else {
+        console.log(rows);
+        res.end(JSON.stringify(rows));
+      }
+    },
+  );
+});
+
+// ------------------------------------ Permission Courier Admin for Manage Database ----------------------------------------
+app.get('/courierPackage', (req, res) => {
+  con.query('select * from datapengiriman', (error, rows, fields) => {
+    if (error) console.log(error);
+    else {
+      res.send(rows);
+    }
+  });
+});
+
 // app.get('/categoryBreakfast', (req, res) => {
 //   con.query('select * from  categorybreakfast', (error, rows, fields) => {
 //     if (error) console.log(error);

@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import {Search, Category, SortModal, Products} from '../components';
 import {images, FONTS, SIZES, COLORS} from '../constants';
-import {ArrowDown} from '../constants/icons';
 import LinearGradient from 'react-native-linear-gradient';
 import {connect} from 'react-redux';
 import {fecthProducts} from '../redux/Shopping/Shopping-actions';
