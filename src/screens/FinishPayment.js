@@ -16,6 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 import {connect} from 'react-redux';
 import {WebView} from 'react-native-webview';
 import {ArrowLeftBlack} from '../constants/icons';
+import {block} from 'react-native-reanimated';
 
 const FinishPayment = ({cart}) => {
   const deviceWidth = Dimensions.get('window').width;
@@ -118,20 +119,21 @@ const FinishPayment = ({cart}) => {
           marginBottom: 5,
         }}
         key={index}>
-        <Text style={{fontFamily: FONTS.medium, fontSize: SIZES.body1}}>
+        <Text
+          style={{fontFamily: FONTS.medium, fontSize: SIZES.body1, width: 280}}>
           {val.nama}
         </Text>
-        <Text style={{fontFamily: FONTS.regular, fontSize: SIZES.body1}}>
+        <Text
+          style={{
+            fontFamily: FONTS.regular,
+            fontSize: SIZES.body1,
+            color: COLORS.red,
+          }}>
           {convertToRupiah(val.harga)}
         </Text>
       </View>
     );
   });
-
-  let sum = DataSource.reduce((acc, crv) => {
-    let all = acc + crv.price;
-    return all;
-  }, 2500);
 
   const Total = () => {
     return (
@@ -153,6 +155,7 @@ const FinishPayment = ({cart}) => {
             style={{
               fontFamily: FONTS.regular,
               fontSize: SIZES.body1,
+              color: COLORS.red,
             }}>
             10%
           </Text>
@@ -162,6 +165,7 @@ const FinishPayment = ({cart}) => {
             fontFamily: FONTS.medium,
             fontSize: SIZES.body1,
             alignSelf: 'flex-end',
+            color: COLORS.red,
           }}>
           {convertToRupiah(totalPrice)}
         </Text>
@@ -190,30 +194,35 @@ const FinishPayment = ({cart}) => {
           <Text style={styles.paymentDurationTitle}>
             Batas Akhir Pembayaranmu
           </Text>
-          <CountDown
-            style={{display: 'flex', marginTop: 10}}
-            size={20}
-            until={86400}
-            onFinish={() => alert('Maaf Melebihi Batas Waktu')}
-            onPress={() => alert('Segera Selesaikan Pembayaran Anda')}
-            digitStyle={{
-              backgroundColor: 'rgba(66, 66, 66, 0)',
-            }}
-            digitTxtStyle={{color: COLORS.white, fontSize: SIZES.h11}}
-            separatorStyle={{color: COLORS.white}}
-            timeToShow={['H', 'M', 'S']}
-            timeLabels={{m: null, s: null}}
-            showSeparator
-          />
+          <View style={styles.timerContainer(status)}>
+            <CountDown
+              style={styles.CountDownContainer}
+              size={20}
+              until={86400}
+              onFinish={() => alert('Maaf Melebihi Batas Waktu')}
+              onPress={() => alert('Segera Selesaikan Pembayaran Anda')}
+              digitStyle={{
+                backgroundColor: 'rgba(66, 66, 66, 0)',
+              }}
+              digitTxtStyle={{color: COLORS.white, fontSize: SIZES.h11}}
+              separatorStyle={{color: COLORS.white}}
+              timeToShow={['H', 'M', 'S']}
+              timeLabels={{m: null, s: null}}
+              showSeparator
+            />
+          </View>
           <View style={styles.importantContainer}>
             <Text style={styles.importantText}>
-              Pastikan screen shoot laman ini untuk mencocokkan harga
+              Don't forget to screenshot invoice in the Application
             </Text>
             <Text style={styles.importantTextRed}>
               * HATI - HATI BANYAK PENIPUAN *
             </Text>
           </View>
-          <Text style={styles.paymentStatus}>Payment Status: {status}</Text>
+          <View style={styles.paymentStatusContainer}>
+            <Text style={styles.paymentStatus}>Payment Status:</Text>
+            <Text style={styles.Status(status)}> {status}</Text>
+          </View>
         </View>
 
         <View style={styles.bottom}>
@@ -222,7 +231,8 @@ const FinishPayment = ({cart}) => {
             style={styles.ImageBackground}
           />
           <View style={styles.listItem}>
-            <ScrollView style={{marginTop: 40}}>
+            <ScrollView
+              style={{marginTop: 40, height: 250, overflow: 'hidden'}}>
               {Item}
               <Divider
                 style={{
@@ -260,8 +270,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     height: 749,
     paddingHorizontal: 0,
-    // paddingVertical: 'auto',
-    // borderColor: COLORS.green,
   },
   top: {
     display: 'flex',
@@ -305,6 +313,7 @@ const styles = StyleSheet.create({
   ImageBackground: {
     position: 'absolute',
     zIndex: -1,
+    overflow: 'hidden',
   },
   buttonCheckout: {
     display: 'flex',
@@ -315,10 +324,27 @@ const styles = StyleSheet.create({
   listItem: {
     paddingHorizontal: 22,
   },
+  paymentStatusContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
   paymentStatus: {
     marginTop: 25,
     fontFamily: FONTS.regular,
     fontSize: SIZES.body3,
     color: COLORS.white,
   },
+  Status: (status) => ({
+    marginTop: 25,
+    fontFamily: FONTS.medium,
+    fontSize: SIZES.body3,
+    color: status === 'Completed' ? COLORS.Darkgreen : COLORS.Darkred,
+  }),
+  CountDownContainer: {
+    display: 'flex',
+    marginTop: 10,
+  },
+  timerContainer: (status) => ({
+    display: status === 'Pending' ? 'flex' : 'none',
+  }),
 });

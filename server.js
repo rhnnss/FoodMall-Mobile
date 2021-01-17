@@ -88,7 +88,7 @@ app.post('/paypal', (req, res) => {
           items: [
             {
               name: 'FoodMall INC',
-              sku: 'item',
+              sku: 'Foods',
               price: totalPrice,
               currency: 'USD',
               quantity: 1,
@@ -99,7 +99,7 @@ app.post('/paypal', (req, res) => {
           currency: 'USD',
           total: totalPrice,
         },
-        description: 'This is the payment description.',
+        description: "Don't forget to screenshot invoice in the Application",
       },
     ],
   };
@@ -203,8 +203,8 @@ app.post('/register', (req, res) => {
     con.query(
       'INSERT INTO users (username, password) VALUES (?,?)',
       [username, hash],
-      (err, result) => {
-        console.log(err);
+      (error, result) => {
+        console.log(error);
         console.log(result);
       },
     );

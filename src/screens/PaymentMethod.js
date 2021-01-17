@@ -3,7 +3,6 @@ import {
   Dimensions,
   ScrollView,
   StyleSheet,
-  Switch,
   Text,
   TouchableOpacity,
   View,
@@ -19,8 +18,8 @@ import {connect} from 'react-redux';
 const PaymentMethod = ({cart}) => {
   const navigation = useNavigation();
   const deviceHeight = Dimensions.get('window').height;
-  const [isEnable, setIsEnable] = useState(false);
-  const toggleSwitch = () => setIsEnable((previousState) => !previousState);
+  // const [isEnable, setIsEnable] = useState(false);
+  // const toggleSwitch = () => setIsEnable((previousState) => !previousState);
   const [isOnBlueToggleSwitch, setIsOnBlueToggleSwitch] = useState(false);
 
   const [propsName, setPropsName] = useState('Albert Flores');
