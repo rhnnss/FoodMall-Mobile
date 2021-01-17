@@ -55,6 +55,10 @@ import PasswordIcon from '../assets/icons/password';
 import EyeOn from '../assets/icons/eye';
 import EyeOff from '../assets/icons/eye-off';
 
+import TicketBackgrondSVG from '../assets/icons/ticket-background.svg';
+import ArrowLeftBlack from '../assets/icons/arrow-left-black.svg';
+import PaypalCheckout from '../assets/icons/PaypalCheckout.svg';
+
 export {
   ArrowBack,
   ArrowDown,
@@ -103,4 +107,7 @@ export {
   PasswordIcon,
   EyeOn,
   EyeOff,
+  TicketBackgrondSVG,
+  ArrowLeftBlack,
+  PaypalCheckout,
 };

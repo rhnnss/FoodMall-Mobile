@@ -12,8 +12,15 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+const engines = require('consolidate');
+const paypal = require('paypal-rest-sdk');
+
+app.engine('ejs', engines.ejs);
+app.set('views', './src/views');
+app.set('view engine', 'ejs');
+
 app.use(bodyParser.json({type: 'application/json'}));
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(
   cors({
@@ -40,6 +47,107 @@ var server = app.listen(4090, () => {
 con.connect((error) => {
   if (error) console.log(`${error} Ada yang salah!`);
   else console.log('connected');
+});
+
+// ---------------------------------- Paypal Integrated ----------------------------------
+
+paypal.configure({
+  mode: 'sandbox', //sandbox or live
+  client_id:
+    'AZHCgaW9ZqAJCeSMDGA-HjyeKB-Vx-8uXwc6JQVAg4cizfdLapBUlb0KrBEY14jaR1mmyz1OYHDtgWSS',
+  client_secret:
+    'EHL7cQTF4O8Mag_bSFRsAljE1N2d2IgqAXnQx4Wvit46aB6AQ4L6Da0ETk8jHuUk5Ag7Apa9LQpr56hN',
+});
+
+let totalPrice = '';
+const randomHarga = (p) => {
+  return (totalPrice = p);
+};
+
+app.get('/', (req, res) => {
+  res.render('index');
+});
+
+app.post('/paypal', (req, res) => {
+  let data = req.body;
+  let harga = data.harga;
+  randomHarga(harga);
+
+  var create_payment_json = {
+    intent: 'sale',
+    payer: {
+      payment_method: 'paypal',
+    },
+    redirect_urls: {
+      return_url: 'http://localhost:4090/success',
+      cancel_url: 'http://localhost:4090/cancel',
+    },
+    transactions: [
+      {
+        item_list: {
+          items: [
+            {
+              name: 'FoodMall INC',
+              sku: 'item',
+              price: totalPrice,
+              currency: 'USD',
+              quantity: 1,
+            },
+          ],
+        },
+        amount: {
+          currency: 'USD',
+          total: totalPrice,
+        },
+        description: 'This is the payment description.',
+      },
+    ],
+  };
+
+  paypal.payment.create(create_payment_json, function (error, payment) {
+    if (error) {
+      throw error;
+    } else {
+      console.log('Create Payment Response');
+      console.log(payment);
+      res.redirect(payment.links[1].href);
+    }
+  });
+});
+
+app.get('/success', (req, res) => {
+  var PayerID = req.query.PayerID;
+  var paymentId = req.query.paymentId;
+
+  var execute_payment_json = {
+    payer_id: PayerID,
+    transactions: [
+      {
+        amount: {
+          currency: 'USD',
+          total: totalPrice,
+        },
+      },
+    ],
+  };
+
+  paypal.payment.execute(paymentId, execute_payment_json, function (
+    error,
+    payment,
+  ) {
+    if (error) {
+      console.log(error.response);
+      throw error;
+    } else {
+      console.log('Get Payment Response');
+      console.log(JSON.stringify(payment));
+      res.render('success');
+    }
+  });
+});
+
+app.get('/cancel', (req, res) => {
+  res.render('cancel');
 });
 
 // ---------------------------------- Get Data from Mysql ----------------------------------
@@ -244,69 +352,6 @@ app.get('/courierPackage', (req, res) => {
     }
   });
 });
-
-// app.get('/categoryBreakfast', (req, res) => {
-//   con.query('select * from  categorybreakfast', (error, rows, fields) => {
-//     if (error) console.log(error);
-//     else {
-//       res.send(rows);
-//     }
-//   });
-// });
-
-// app.get('/categoryBeef', (req, res) => {
-//   con.query('select * from  categorybeef', (error, rows, fields) => {
-//     if (error) console.log(error);
-//     else {
-//       res.send(rows);
-//     }
-//   });
-// });
-
-// app.get('/categoryChicken', (req, res) => {
-//   con.query('select * from  categorychicken', (error, rows, fields) => {
-//     if (error) console.log(error);
-//     else {
-//       res.send(rows);
-//     }
-//   });
-// });
-
-// app.get('/categoryFish', (req, res) => {
-//   con.query('select * from  categoryfish', (error, rows, fields) => {
-//     if (error) console.log(error);
-//     else {
-//       res.send(rows);
-//     }
-//   });
-// });
-
-// app.get('/categoryIceCream', (req, res) => {
-//   con.query('select * from  categoryicecream', (error, rows, fields) => {
-//     if (error) console.log(error);
-//     else {
-//       res.send(rows);
-//     }
-//   });
-// });
-
-// app.get('/categorySnacks', (req, res) => {
-//   con.query('select * from  categorysnacks', (error, rows, fields) => {
-//     if (error) console.log(error);
-//     else {
-//       res.send(rows);
-//     }
-//   });
-// });
-
-// app.get('/testRole', (req, res) => {
-//   con.query('select * from  testrole', (error, rows, fields) => {
-//     if (error) console.log(error);
-//     else {
-//       res.send(rows);
-//     }
-//   });
-// });
 
 // ---------------------------------- Post Data to Mysql ----------------------------------
 app.post('/deliveryAddress', (req, res) => {

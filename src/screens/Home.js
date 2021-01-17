@@ -29,99 +29,15 @@ const Home = ({
   const [dataSortByName, setDataSortByName] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
 
-  const [lower, setLower] = useState(
-    products.sort((a, b) => (+a.harga > +b.harga ? 1 : -1)),
-  );
-  const [higher, setHigher] = useState(
-    products.sort((a, b) => (+a.harga < +b.harga ? 1 : -1)),
-  );
-  const [abjad, setAbjad] = useState(
-    products.sort((a, b) =>
-      a.harga.toLowerCase() > b.harga.toLowerCase() ? 1 : -1,
-    ),
-  );
-
   useEffect(() => {
-    // dispatch(fecthProducts());
     handleGetUsername(username);
     handleFetchProduct();
     setMasterDataSource(products);
     setDataSortByName(products);
   }, [handleGetUsername, handleFetchProduct]);
 
-  // ------------------------------- Sorting -------------------------------
-
-  const sortingA = () => {
-    let sortByName = masterDataSource.sort(compare);
-
-    // Sorting
-    function compare(a, b) {
-      const namaA = a.nama.toUpperCase();
-      const namaB = b.nama.toUpperCase();
-
-      let comparison = 0;
-      if (namaA > namaB) {
-        comparison = 1;
-      } else if (namaA < namaB) {
-        comparison = -1;
-      }
-      return comparison;
-    }
-
-    return setDataSortByName(sortByName);
-  };
-
-  const sortingPriceHigher = () => {
-    let sortByHigher = masterDataSource.sort(compareHigher);
-
-    function compareHigher(a, b) {
-      const hargaA = +a.harga;
-      const hargaB = +b.harga;
-
-      let comparison = 0;
-      if (hargaA < hargaB) {
-        comparison = 1;
-      } else if (hargaA > hargaB) {
-        comparison = -1;
-      }
-      return comparison;
-    }
-
-    return setDataSortByName(sortByHigher);
-  };
-
-  const sortingPriceLower = () => {
-    let sortByLower = masterDataSource.sort(compareLower);
-
-    // Sorting
-    function compareLower(a, b) {
-      const hargaA = a.harga;
-      const hargaB = b.harga;
-
-      let comparison = 0;
-      if (hargaA > hargaB) {
-        comparison = 1;
-      } else if (hargaA < hargaB) {
-        comparison = -1;
-      }
-      return comparison;
-    }
-
-    return setDataSortByName(sortByLower);
-  };
-
-  let popupRef = React.createRef();
-
-  const onShowPopup = () => {
-    popupRef.show();
-  };
-
-  const onClosePopup = () => {
-    popupRef.close();
-  };
-
   //------------------------------- Render Products -------------------------------
-  const renderProducts = () => {
+  const RenderProducts = () => {
     if (loading) {
       return <Text>Loading Man...</Text>;
     }
@@ -136,28 +52,11 @@ const Home = ({
           return <Products key={product.id} data={product} />;
         }
       });
-
-    // return (
-    //   <FlatList
-    //     data={masterDataSource}
-    //     keyExtractor={(item, index) => index.toString()}
-    //     renderItem={({item}) =>
-    //       item.role === 'Fish' ? <Products data={item} /> : null
-    //     }
-    //     contentContainerStyle={{
-    //       lexDirection: 'row',
-    //       justifyContent: 'space-between',
-    //       paddingHorizontal: 12,
-    //       marginTop: -35,
-    //     }}
-    //   />
-    // );
   };
 
   return (
     <ScrollView style={styles.page}>
       <View style={styles.container}>
-        {/*------------------------------- Header Container ------------------------------------- */}
         <View style={styles.headerContainer}>
           <View style={styles.HeaderText}>
             <Text style={styles.LabelHeader}>{username}</Text>
@@ -197,10 +96,6 @@ const Home = ({
           </View>
         </View>
 
-        {/* <TouchableOpacity onPress={() => renderProductsWithSort()}>
-          <Text>Press To Short</Text>
-        </TouchableOpacity> */}
-
         {/*------------------------------- Our Product ------------------------------------- */}
         <View style={styles.ourProduct}>
           <Text style={styles.LabelHeader2}>Our Product</Text>
@@ -213,14 +108,7 @@ const Home = ({
         </View>
 
         {/*------------------------------- RandomProduct ------------------------------------- */}
-        <View style={styles.RandomProduct}>{renderProducts()}</View>
-
-        {/*------------------------------- Sort Modal ------------------------------------- */}
-        <SortModal
-          ref={(target) => (popupRef = target)}
-          onTouchOutside={onClosePopup}
-          title="You Wanna Sortby"
-        />
+        <View style={styles.RandomProduct}>{RenderProducts()}</View>
       </View>
     </ScrollView>
   );

@@ -7,6 +7,8 @@ export const NasiUduk = require('../assets/images/NasiUduk.png');
 export const BigAvatar = require('../assets/images/BigAvatar.png');
 export const LargeAvatar = require('../assets/images/LargeAvatar.png');
 export const CourierAdminAvatar = require('../assets/images/BigCourierAdminAvatar.png');
+export const TicketBackground = require('../assets/images/Subtract.png');
+export const PaypalCheckout = require('../assets/images/PaypalCheckout.png');
 
 export default {
   avatar,
@@ -18,4 +20,6 @@ export default {
   BigAvatar,
   LargeAvatar,
   CourierAdminAvatar,
+  TicketBackground,
+  PaypalCheckout,
 };

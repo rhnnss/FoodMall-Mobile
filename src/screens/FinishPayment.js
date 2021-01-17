@@ -5,16 +5,17 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Modal,
+  Image,
 } from 'react-native';
-import {Divider, Badge} from 'react-native-elements';
+import {Divider} from 'react-native-elements';
 import {ScrollView} from 'react-native-gesture-handler';
-import {CardPayment} from '../components';
-import {COLORS, FONTS, SIZES} from '../constants';
+import {COLORS, FONTS, images, SIZES} from '../constants';
 import CountDown from 'react-native-countdown-component';
-import {BORDER_RADIUS} from '../constants/themes';
 import {useNavigation} from '@react-navigation/native';
 import {connect} from 'react-redux';
-import Axios from 'axios';
+import {WebView} from 'react-native-webview';
+import {ArrowLeftBlack} from '../constants/icons';
 
 const FinishPayment = ({cart}) => {
   const deviceWidth = Dimensions.get('window').width;
@@ -24,6 +25,21 @@ const FinishPayment = ({cart}) => {
 
   const [DataSource, setDataSource] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [status, setStatus] = useState('Pending');
+  const [showModal, setShowModal] = useState(false);
+
+  // Modal Paypal Showing
+  const handleResponse = (data) => {
+    if (data.title === 'success') {
+      setShowModal(false);
+      setStatus('Completed');
+    } else if (data.title === 'cancel') {
+      setShowModal(false);
+      setStatus('Canceled');
+    } else {
+      return;
+    }
+  };
 
   useEffect(() => {
     let price = 0;
@@ -74,8 +90,8 @@ const FinishPayment = ({cart}) => {
     }
     return i;
   }
-  let time = today.getHours() + ':' + addZero(today.getMinutes());
 
+  let time = today.getHours() + ':' + addZero(today.getMinutes());
   let nowDate = date;
   let nowTime = time;
 
@@ -118,11 +134,6 @@ const FinishPayment = ({cart}) => {
   }, 2500);
 
   const Total = () => {
-    // let sum = DataSource.reduce((acc, crv) => {
-    //   let all = acc + crv.price;
-    //   return all;
-    // }, 2500);
-
     return (
       <View
         style={{
@@ -160,67 +171,77 @@ const FinishPayment = ({cart}) => {
 
   //--------------------------- Render Container ---------------------------
   return (
-    <ScrollView style={styles.container}>
-      <View>
-        <Text style={styles.title}>Your Payment Deadline</Text>
-        <View style={styles.dateTimeContainer}>
-          <Text style={styles.date}>{nowDate}</Text>
-          <Text style={styles.dateTime}>{nowTime}</Text>
+    <ScrollView style={{backgroundColor: COLORS.primary}}>
+      <Modal visible={showModal} onRequestClose={() => setShowModal(false)}>
+        <WebView
+          source={{uri: 'http://localhost:4090/'}}
+          onNavigationStateChange={(data) => handleResponse(data)}
+          injectedJavaScript={`document.getElementById("price").value=${totalPrice};document.f1.submit()`}
+        />
+      </Modal>
+
+      <View style={styles.container}>
+        <View style={styles.top}>
+          <TouchableOpacity
+            style={styles.arrowLeft}
+            onPress={() => navigation.navigate('Home')}>
+            <ArrowLeftBlack width={40} height={40} />
+          </TouchableOpacity>
+          <Text style={styles.paymentDurationTitle}>
+            Batas Akhir Pembayaranmu
+          </Text>
+          <CountDown
+            style={{display: 'flex', marginTop: 10}}
+            size={20}
+            until={86400}
+            onFinish={() => alert('Maaf Melebihi Batas Waktu')}
+            onPress={() => alert('Segera Selesaikan Pembayaran Anda')}
+            digitStyle={{
+              backgroundColor: 'rgba(66, 66, 66, 0)',
+            }}
+            digitTxtStyle={{color: COLORS.white, fontSize: SIZES.h11}}
+            separatorStyle={{color: COLORS.white}}
+            timeToShow={['H', 'M', 'S']}
+            timeLabels={{m: null, s: null}}
+            showSeparator
+          />
+          <View style={styles.importantContainer}>
+            <Text style={styles.importantText}>
+              Pastikan screen shoot laman ini untuk mencocokkan harga
+            </Text>
+            <Text style={styles.importantTextRed}>
+              * HATI - HATI BANYAK PENIPUAN *
+            </Text>
+          </View>
+          <Text style={styles.paymentStatus}>Payment Status: {status}</Text>
         </View>
-        {/* <Text style={styles.timer}>Hai</Text> */}
-        <CountDown
-          style={{marginLeft: deviceWidth * -0.52}}
-          size={20}
-          until={86400}
-          onFinish={() => alert('Maaf Melebihi Batas Waktu')}
-          onPress={() => alert('Segera Selesaikan Pembayaran Anda')}
-          digitStyle={{
-            backgroundColor: 'rgba(66, 66, 66, 0)',
-          }}
-          digitTxtStyle={{color: COLORS.black}}
-          separatorStyle={{color: COLORS.black}}
-          timeToShow={['H', 'M', 'S']}
-          timeLabels={{m: null, s: null}}
-          showSeparator
-        />
-        <Divider
-          style={{
-            backgroundColor: COLORS.black,
-            height: 1,
-            width: '100%',
-            marginTop: 9,
-          }}
-        />
-        <Text style={styles.labelTotal}>Total Payment</Text>
-        <Text style={styles.valuePembayaran}>
-          {convertToRupiah(totalPrice - 2500)}
-        </Text>
+
+        <View style={styles.bottom}>
+          <Image
+            source={images.TicketBackground}
+            style={styles.ImageBackground}
+          />
+          <View style={styles.listItem}>
+            <ScrollView style={{marginTop: 40}}>
+              {Item}
+              <Divider
+                style={{
+                  backgroundColor: COLORS.black,
+                  height: 1,
+                  width: '100%',
+                  marginTop: 9,
+                }}
+              />
+              <View>{Total()}</View>
+            </ScrollView>
+            <TouchableOpacity
+              style={styles.buttonCheckout}
+              onPress={() => setShowModal(true)}>
+              <Image source={images.PaypalCheckout} />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-
-      <View>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <CardPayment type="Visa" />
-        </ScrollView>
-      </View>
-
-      <ScrollView style={{marginTop: 40}}>{Item}</ScrollView>
-
-      <Divider
-        style={{
-          backgroundColor: COLORS.black,
-          height: 1,
-          width: '100%',
-          marginTop: 9,
-        }}
-      />
-
-      <View>{Total()}</View>
-
-      <TouchableOpacity
-        style={styles.buttonBackToHome}
-        onPress={() => navigation.navigate('Home')}>
-        <Text style={styles.valueBacktoHome}>Shopping Again</Text>
-      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -233,56 +254,71 @@ export default connect(mapStateToProps)(FinishPayment);
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 30,
+    position: 'relative',
+    display: 'flex',
+    justifyContent: 'space-between',
+    borderWidth: 2,
+    height: 749,
+    paddingHorizontal: 0,
+    // paddingVertical: 'auto',
+    // borderColor: COLORS.green,
   },
-  title: {
-    fontFamily: FONTS.medium,
-    fontSize: 25,
-    marginTop: 47,
-  },
-  dateTimeContainer: {
-    flexDirection: 'row',
-  },
-  date: {
-    fontFamily: FONTS.regular,
-    fontSize: SIZES.body1,
-  },
-  dateTime: {
-    fontFamily: FONTS.bold,
-    fontSize: SIZES.body1,
-    marginLeft: 10,
-  },
-  labelTotal: {
-    fontFamily: FONTS.medium,
-    fontSize: SIZES.body3,
-    marginTop: 15,
-  },
-  valuePembayaran: {
-    fontFamily: FONTS.medium,
-    fontSize: SIZES.body3,
-    marginBottom: 40,
-  },
-  buttonBackToHome: {
-    paddingVertical: 16,
-    backgroundColor: COLORS.primary,
+  top: {
+    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: BORDER_RADIUS.regular,
-    marginTop: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-
-    elevation: 4,
-    marginBottom: 20,
+    marginTop: 75,
   },
-  valueBacktoHome: {
+  importantContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  importantText: {
+    textAlign: 'center',
+    width: 292,
+    fontFamily: FONTS.regular,
+    fontSize: SIZES.body3,
+    color: COLORS.white,
+    lineHeight: 29,
+  },
+  importantTextRed: {
+    textAlign: 'center',
+    width: 292,
+    fontFamily: FONTS.bold,
+    fontSize: SIZES.body3,
+    color: COLORS.Darkred,
+  },
+  paymentDurationTitle: {
+    textAlign: 'center',
     fontFamily: FONTS.medium,
-    fontSize: SIZES.body1,
+    fontSize: SIZES.h1,
+    color: COLORS.white,
+  },
+  arrowLeft: {
+    position: 'absolute',
+    left: 25,
+    top: -50,
+  },
+  ImageBackground: {
+    position: 'absolute',
+    zIndex: -1,
+  },
+  buttonCheckout: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 32,
+  },
+  listItem: {
+    paddingHorizontal: 22,
+  },
+  paymentStatus: {
+    marginTop: 25,
+    fontFamily: FONTS.regular,
+    fontSize: SIZES.body3,
     color: COLORS.white,
   },
 });

@@ -14,7 +14,7 @@ import CategoryFish from '../screens/MenuCategory/CategoryFish';
 import CategoryIceCream from '../screens/MenuCategory/CategoryIceCream';
 import CategorySnacks from '../screens/MenuCategory/CategorySnacks';
 import SearchInHome from '../screens/SearchInHome';
-import TestingLoad from '../screens/TestingLoad/TestingLoad';
+
 import Splash from '../screens/Startup/Splash';
 import Login from '../screens/Startup/Login';
 import Register from '../screens/Startup/Register';
@@ -30,39 +30,6 @@ import DashboardCourier from '../screens/ScreensCourierAdmin/DashboardCourier';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const SlideFromRight = () => {
-  const translateX = position.interpolate({
-    inputRange: [index - 1, index],
-    outputRange: [width, 0],
-  });
-
-  return {transform: [{translateX}]};
-};
-
-const TransitionConfiguration = () => {
-  return {
-    transitionSpec: {
-      duration: 750,
-      easing: Easing.out(Easing.poly(4)),
-      timing: Animated.timing,
-      useNativeDriver: true,
-    },
-    screenInterpolator: (sceneProps) => {
-      const {layout, position, scene} = sceneProps;
-      const width = layout.initWidth;
-      const height = layout.initHeight;
-      const {index, route} = scene;
-      const params = route.params || {}; // <- That's new
-      const transition = params.transition || 'default'; // <- That's new
-      return {
-        default: SlideFromRight(index, position, width),
-        bottomTransition: SlideFromBottom(index, position, height),
-        collapseTransition: CollapseTransition(index, position),
-      }[transition];
-    },
-  };
-};
-
 // Bagian Tab
 const MainApp = () => {
   return (
@@ -77,9 +44,7 @@ const MainApp = () => {
 // Bagian Tampilan
 const Router = () => {
   return (
-    <Stack.Navigator
-      initialRouteName="Splash"
-      TransitionConfiguration={TransitionConfiguration}>
+    <Stack.Navigator initialRouteName="Splash">
       <Stack.Screen
         name="Splash"
         component={Splash}

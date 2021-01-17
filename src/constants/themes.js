@@ -6,6 +6,7 @@ export const COLORS = {
   // Icon
   white: '#FFFFFF',
   black: '#3D3D3D',
+  Darkred: '#FF0000',
   red: '#EC615B',
   green: '#5BEC95',
   grey: '#6F6F6F',
