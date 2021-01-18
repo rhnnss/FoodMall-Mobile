@@ -2,7 +2,7 @@
 
 ### WHAT ARE USED IN THIS PROJECT
 
-* React to Original Redux
+* React Native Redux
 * React Native Hooks
 * Js Express node
 * Mysql
