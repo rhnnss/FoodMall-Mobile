@@ -26,17 +26,17 @@ const FinishPayment = ({cart}) => {
 
   const [DataSource, setDataSource] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [status, setStatus] = useState('Pending');
+  const [status, setStatus] = useState('PENDING');
   const [showModal, setShowModal] = useState(false);
 
   // Modal Paypal Showing
   const handleResponse = (data) => {
     if (data.title === 'success') {
       setShowModal(false);
-      setStatus('Completed');
+      setStatus('COMPLETED');
     } else if (data.title === 'cancel') {
       setShowModal(false);
-      setStatus('Canceled');
+      setStatus('CANCELED');
     } else {
       return;
     }
@@ -93,8 +93,6 @@ const FinishPayment = ({cart}) => {
   }
 
   let time = today.getHours() + ':' + addZero(today.getMinutes());
-  let nowDate = date;
-  let nowTime = time;
 
   const convertToRupiah = (angka) => {
     var rupiah = '';
@@ -186,13 +184,10 @@ const FinishPayment = ({cart}) => {
 
       <View style={styles.container}>
         <View style={styles.top}>
-          <TouchableOpacity
-            style={styles.arrowLeft}
-            onPress={() => navigation.navigate('Home')}>
-            <ArrowLeftBlack width={40} height={40} />
-          </TouchableOpacity>
-          <Text style={styles.paymentDurationTitle}>
-            Batas Akhir Pembayaranmu
+          <Text style={styles.paymentDurationTitle}>PAYMENT DEADLINE</Text>
+          <Text style={styles.importantText}>
+            Don't forget to screenshot invoice in the Application, the total
+            price is included in 10% VAT
           </Text>
           <View style={styles.timerContainer(status)}>
             <CountDown
@@ -211,17 +206,9 @@ const FinishPayment = ({cart}) => {
               showSeparator
             />
           </View>
-          <View style={styles.importantContainer}>
-            <Text style={styles.importantText}>
-              Don't forget to screenshot invoice in the Application
-            </Text>
-            <Text style={styles.importantTextRed}>
-              * HATI - HATI BANYAK PENIPUAN *
-            </Text>
-          </View>
-          <View style={styles.paymentStatusContainer}>
-            <Text style={styles.paymentStatus}>Payment Status:</Text>
-            <Text style={styles.Status(status)}> {status}</Text>
+          <View style={styles.TotalPaymentContainer}>
+            <Text style={styles.TpTitle}>Total Pembayaran</Text>
+            <Text style={styles.TpValue}>{convertToRupiah(totalPrice)}</Text>
           </View>
         </View>
 
@@ -234,16 +221,13 @@ const FinishPayment = ({cart}) => {
             <ScrollView
               style={{marginTop: 40, height: 250, overflow: 'hidden'}}>
               {Item}
-              <Divider
-                style={{
-                  backgroundColor: COLORS.black,
-                  height: 1,
-                  width: '100%',
-                  marginTop: 9,
-                }}
-              />
-              <View>{Total()}</View>
             </ScrollView>
+
+            <View style={styles.paymentStatusContainer}>
+              {/* <Text style={styles.paymentStatus}>PAYMENT STATUS :</Text> */}
+              <Text style={styles.paymentStatusValue(status)}>{status}</Text>
+            </View>
+
             <TouchableOpacity
               style={styles.buttonCheckout}
               onPress={() => setShowModal(true)}>
@@ -275,34 +259,20 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 75,
-  },
-  importantContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 10,
+    marginTop: 35,
   },
   importantText: {
     textAlign: 'center',
-    width: 292,
+    width: 290,
     fontFamily: FONTS.regular,
-    fontSize: SIZES.body3,
+    fontSize: SIZES.default,
     color: COLORS.white,
-    lineHeight: 29,
-  },
-  importantTextRed: {
-    textAlign: 'center',
-    width: 292,
-    fontFamily: FONTS.bold,
-    fontSize: SIZES.body3,
-    color: COLORS.Darkred,
+    marginTop: 10,
   },
   paymentDurationTitle: {
     textAlign: 'center',
     fontFamily: FONTS.medium,
-    fontSize: SIZES.h1,
+    fontSize: SIZES.h11,
     color: COLORS.white,
   },
   arrowLeft: {
@@ -319,7 +289,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 32,
+    paddingTop: 12,
+    paddingBottom: 32,
   },
   listItem: {
     paddingHorizontal: 22,
@@ -327,24 +298,42 @@ const styles = StyleSheet.create({
   paymentStatusContainer: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   paymentStatus: {
-    marginTop: 25,
     fontFamily: FONTS.regular,
     fontSize: SIZES.body3,
-    color: COLORS.white,
+    color: COLORS.black,
   },
-  Status: (status) => ({
-    marginTop: 25,
-    fontFamily: FONTS.medium,
+  paymentStatusValue: (status) => ({
+    fontFamily: FONTS.semiBold,
     fontSize: SIZES.body3,
-    color: status === 'Completed' ? COLORS.Darkgreen : COLORS.Darkred,
+    color: status === 'COMPLETED' ? COLORS.Darkgreen : COLORS.Darkred,
+    marginLeft: 10,
   }),
   CountDownContainer: {
     display: 'flex',
     marginTop: 10,
   },
   timerContainer: (status) => ({
-    display: status === 'Pending' ? 'flex' : 'none',
+    display: status === 'PENDING' ? 'flex' : 'none',
   }),
+  TotalPaymentContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 15,
+  },
+  TpValue: {
+    fontFamily: FONTS.medium,
+    fontSize: SIZES.h11,
+    color: COLORS.Darkred,
+  },
+  TpTitle: {
+    fontFamily: FONTS.medium,
+    fontSize: SIZES.body3,
+    color: COLORS.white,
+  },
 });

@@ -23,6 +23,7 @@ export const FONTS = {
   light: 'Poppins-Light',
   regular: 'Poppins-Regular',
   medium: 'Poppins-Medium',
+  semiBold: 'Poppins-SemiBold',
   bold: 'Poppins-Bold',
   SarabunLight: 'Sarabun-Light',
   SarabunRegular: 'Sarabun-Regular',
