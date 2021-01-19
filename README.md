@@ -4,7 +4,7 @@
 
 * React Native Redux
 * React Native Hooks
-* Js Express node
+* Node Js Express
 * Mysql
 * SDK Rest Paypal
 etc ...
